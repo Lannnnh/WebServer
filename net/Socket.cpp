@@ -9,15 +9,15 @@
 typedef struct sockaddr SA;
 const int SIZE = 2048;
 
+// 创建socket套接字 绑定端口 监听
 int socket_bind_listen(int port)
 {
     // 检查port在可用区间内
     if (port < 0 || port > 65535) return -1;
 
-    int listenfd = 0;
-    struct sockaddr_in servaddr;
-
     // 创建socket(IPV4 — TCP)， listenfd为监听描述符
+    int listenfd = 0;
+
     if ((listenfd = socket(AF_INET, SOCK_STREAM, 0)) == -1) return -1;
 
     // 消除bind时因为time_wait引起的“Address already in use”错误
@@ -25,6 +25,8 @@ int socket_bind_listen(int port)
     if (setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval)) == -1) return -1;
 
     // 绑定服务器IP和port
+    struct sockaddr_in servaddr;
+
     bzero(&servaddr, sizeof(servaddr));
     servaddr.sin_family = AF_INET;
     servaddr.sin_addr.s_addr =  htonl(INADDR_ANY);
