@@ -1,12 +1,13 @@
-#include "net/Socket.h"
+#include "Socket.h"
 #include <string.h>
 #include <errno.h>
 #include <unistd.h>
 #include <netinet/in.h>
+#include <sys/socket.h>
 #include <netinet/tcp.h>
 
 typedef struct sockaddr SA;
-const int SIZE = 2048;
+const int LISTENQ = 2048;
 
 // 创建socket套接字 绑定端口 监听
 int socket_bind_listen(int port)
@@ -33,7 +34,7 @@ int socket_bind_listen(int port)
     if ((bind(listenfd, (SA *) &servaddr, sizeof(servaddr))) == -1) return -1;
 
     // 开始监听描述符， 最大等待队列长度为SIZE
-    if ((listen(listenfd, SIZE))) return -1;
+    if ((listen(listenfd, LISTENQ))) return -1;
 
     // 无效的监听描述符
     if (listenfd == -1)
