@@ -36,7 +36,7 @@ int socket_bind_listen(int port)
     if ((listen(listenfd, SIZE))) return -1;
 
     // 无效的监听描述符
-    if (listenfd == -1) 
+    if (listenfd == -1)
     {
         close(listenfd);
         return -1;
