@@ -11,4 +11,4 @@ class nocopyable
         ~nocopyable() = default;
 };
 
-#endif
+#endif // end _BASE_NOCOPYABLE_
