@@ -3,6 +3,7 @@
 
 #include <sys/types.h>
 #include "nocopyable.h"
+#include "CountDownLatch.h"
 #include <functional>
 #include <pthread.h>
 #include <string>
@@ -13,7 +14,13 @@ class Thread : nocopyable
     public:
         typedef std::function<void ()> ThreadFunc;
 
-        //explicit Thread(ThreadFunc, const std::string& name = string());
+        explicit Thread(const ThreadFunc&, const std::string &name = std::string());
+        ~Thread();
+        void start();
+        int join();
+        bool started() const { return started_; }
+        pid_t tid() { return tid_; }
+        const std::string& name() const { return name_; }
 
     private:
         void setDefaultName();
@@ -24,6 +31,7 @@ class Thread : nocopyable
         pid_t tid_;
         ThreadFunc func_;
         std::string name_;
+        CountDownLatch latch_;
 };
 
 #endif // end _BASE_THREAD_H
