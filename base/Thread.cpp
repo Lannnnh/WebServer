@@ -56,13 +56,58 @@ void Thread::setDefaultName()
     }
 }
 
+struct ThreadData
+{
+    typedef Thread::ThreadFunc ThreadFunc;
+    ThreadFunc func_;
+    std::string name_;
+    pid_t *tid_;
+    CountDownLatch *latch_;
+
+    ThreadData(const ThreadFunc &func, const std::string &name, pid_t *tid, CountDownLatch *latch)
+      : func_(func),
+        name_(name),
+        tid_(tid),
+        latch_(latch)
+    {    }
+
+    void runInThread()
+    {
+        // need add
+    }
+};
+
+void *startThread(void *obj)
+{
+    // need add 
+}
+
+
 void Thread::start()
 {
-    // need add
+    // assert的作用是先计算表达式 expression ，如果其值为假（即为0），那么它先向stderr打印一条出错信息，然后通过调用 abort 来终止程序运行。
+    assert(!started_);
+    started_ = true;
+    ThreadData *data = new ThreadData(func_, name_, &tid_, &latch_);
+    if (pthread_create(&pthreadId_, NULL, &startThread, data))
+    {
+        started_ = false;
+        delete data;
+    }
+    else 
+    {
+        latch_.wait();
+        assert(tid_ > 0);
+    }
+
 }
 
 int Thread::join()
 {
-    // need add
+    assert(started_);
+    assert(!joined_);
+    joined_ = true;
+    return pthread_join(pthreadId_, NULL);
+    
 }
 
