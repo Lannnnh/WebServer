@@ -89,6 +89,7 @@ struct ThreadData
         latch_ = NULL;
 
         CurrentThread::t_threadName = name_.empty() ? "Thread" : name_.c_str();
+        // 为线程设置name
         prctl(PR_SET_NAME, CurrentThread::t_threadName);
 
         func_();
