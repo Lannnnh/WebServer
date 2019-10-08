@@ -11,12 +11,21 @@
 
 #include "CurrentThread.h"
 
+namespace CurrentThread
+{
+    __thread int t_cachedTid = 0;
+    __thread char t_tidString[32];
+    __thread int t_tidStringLength = 6;
+    __thread const char* t_threadName = "default";
+}
+
 // 得到线程真实的pid 称为tid
 pid_t gettid()
 {
     return static_cast<pid_t> (::syscall(SYS_gettid));
 }
 
+// gettid获取的是内核中线程ID, 而pthread_self是posix描述的线程ID
 void CurrentThread::cacheTid()
 {
     if (t_cachedTid == 0)
@@ -56,6 +65,7 @@ void Thread::setDefaultName()
     }
 }
 
+// 保留线程数据
 struct ThreadData
 {
     typedef Thread::ThreadFunc ThreadFunc;
@@ -73,13 +83,25 @@ struct ThreadData
 
     void runInThread()
     {
-        // need add
+        *tid_ = CurrentThread::tid();
+        tid_ = NULL;
+        latch_->countDown();
+        latch_ = NULL;
+
+        CurrentThread::t_threadName = name_.empty() ? "Thread" : name_.c_str();
+        prctl(PR_SET_NAME, CurrentThread::t_threadName);
+
+        func_();
+        CurrentThread::t_threadName = "finished";
     }
 };
 
 void *startThread(void *obj)
 {
-    // need add 
+    ThreadData *data = static_cast<ThreadData*> (obj);
+    data->runInThread();
+    delete data;
+    return NULL;
 }
 
 
