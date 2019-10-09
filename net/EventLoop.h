@@ -3,7 +3,11 @@
 
 #include "base/nocopyable.h"
 #include "base/CurrentThread.h"
+#include "Poller.h"
 #include <sys/types.h>
+#include <memory>
+
+class Channel;
 
 class EventLoop : nocopyable
 {
@@ -25,9 +29,18 @@ class EventLoop : nocopyable
         bool isInLoopThread() const { return threadId_ == CurrentThread::tid(); }
         static EventLoop *getEventLoopOfCurrentThread();
 
+        // Channel
+        void updateChannel(Channel *channel);
+        void removeChannel(Channel *Channel);
+
     private:
         void abortNotInLoopThread();
 
+        typedef std::vector<Channel*> ChannelList;
+
+        bool quit_;
+        ChannelList activeChannels_;
+        std::unique_ptr<Poller> poller_;
         bool looping_;
         const pid_t threadId_;
 };

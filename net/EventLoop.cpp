@@ -1,8 +1,10 @@
 #include "EventLoop.h"
+#include "Channel.h"
 #include <unistd.h>
 #include <assert.h>
 
 __thread EventLoop* t_loopInThisThread = 0;
+const int kPollTimeMs = 10000;
 
 EventLoop::EventLoop()
     : looping_(false), 
@@ -30,17 +32,31 @@ EventLoop* EventLoop::getEventLoopOfCurrentThread()
     return t_loopInThisThread;
 }
 
-// 目前loop什么都不做 等待5s就退出
+// 
 void EventLoop::loop()
 {
     assert(!looping_);
     assertInLoopThread();
     looping_ = true;
+    quit_ = false;
 
-    // ::poll(NULL, 0, 5*1000); 
+    while (!quit_)
+    {
+        activeChannels_.clear();
+        poller_->poll(kPollTimeMs, &activeChannels_);
+        for (ChannelList::iterator it = activeChannels_.begin(); it != activeChannels_.end(); ++it )
+        {
+            (*it)->handleEvent();
+        }
+    }
 
     // LOG_TRACE << "EventLoop " << this << " stop looping";
     looping_ = false;
+}
+
+void EventLoop::quit()
+{
+    quit_ = true;
 }
 
 void EventLoop::abortNotInLoopThread()
@@ -50,5 +66,10 @@ void EventLoop::abortNotInLoopThread()
     //         << ", current thread id = " <<  CurrentThread::tid();
 }
 
-
+void EventLoop::updateChannel(Channel *channel)
+{
+    assert(channel->ownerLoop() == this);
+    assertInLoopThread();
+    poller_->updateChannel(channel);
+}
 
