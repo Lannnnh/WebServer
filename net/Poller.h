@@ -8,6 +8,7 @@
 #include "EventLoop.h"
 #include "base/Timestamp.h"
 
+struct pollfd;
 class Channel;
 
 class Poller : nocopyable
@@ -21,8 +22,9 @@ class Poller : nocopyable
         Timestamp poll(int timeoutMs, ChannelList *activeChannels);
 
         void updateChannel(Channel *channel);
-
+        void removeChannel(Channel *channel);
         void assertInLoopThread() { ownerLoop_->assertInLoopThread(); }
+        static Poller *newDefaultPoller(EventLoop *loop);
 
     private:
         void fillActiveChannels(int numEvents, ChannelList *activeChannels) const;
