@@ -38,11 +38,13 @@ class EventLoop : nocopyable
 
         typedef std::vector<Channel*> ChannelList;
 
+        bool EventHanding_;
         bool quit_;
         ChannelList activeChannels_;
         std::unique_ptr<Poller> poller_;
         bool looping_;
         const pid_t threadId_;
+        Channel* currentActiveChannel_;
 };
 
 #endif // end _NET_EVENTLOOP_

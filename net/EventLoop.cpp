@@ -8,7 +8,11 @@ const int kPollTimeMs = 10000;
 
 EventLoop::EventLoop()
     : looping_(false), 
-      threadId_(CurrentThread::tid())
+      threadId_(CurrentThread::tid()),
+      EventHanding_(false),
+      quit_(false),
+      poller_(Poller::newDefaultPoller(this)),
+      currentActiveChannel_(NULL)
 {
     // LOG_TRACE << "EventLoop created " << this << " in thread " << threadId_;
     // if (t_loopInThisThread)
@@ -40,14 +44,19 @@ void EventLoop::loop()
     looping_ = true;
     quit_ = false;
 
+
     while (!quit_)
     {
         activeChannels_.clear();
         poller_->poll(kPollTimeMs, &activeChannels_);
+        EventHanding_ = true;
         for (ChannelList::iterator it = activeChannels_.begin(); it != activeChannels_.end(); ++it )
         {
+            currentActiveChannel_ = *it;
             (*it)->handleEvent();
         }
+        currentActiveChannel_ = NULL;
+        EventHanding_ = false;
     }
 
     // LOG_TRACE << "EventLoop " << this << " stop looping";
@@ -71,5 +80,17 @@ void EventLoop::updateChannel(Channel *channel)
     assert(channel->ownerLoop() == this);
     assertInLoopThread();
     poller_->updateChannel(channel);
+}
+
+void EventLoop::removeChannel(Channel *channel)
+{
+    assert(channel->ownerLoop == this);
+    assertInLoopThread();
+
+    if (EventHanding_)
+    {
+        assert(currentActiveChannel_ == channel || std::find(activeChannels_.begin(), activeChannels_.end(), channel) == activeChannels_.end());
+    }
+    poller_->removeChannel(channel);
 }
 
