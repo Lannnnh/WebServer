@@ -5,11 +5,12 @@
 #include <functional>
 #include <map>
 #include <vector>
-#include "EventLoop.h"
+//#include "EventLoop.h"
 #include "base/Timestamp.h"
 
 struct pollfd;
 class Channel;
+class EventLoop;
 
 class Poller : nocopyable
 {
@@ -23,7 +24,7 @@ class Poller : nocopyable
 
         void updateChannel(Channel *channel);
         void removeChannel(Channel *channel);
-        void assertInLoopThread() { ownerLoop_->assertInLoopThread(); }
+        void assertInLoopThread();
         static Poller *newDefaultPoller(EventLoop *loop);
 
     private:

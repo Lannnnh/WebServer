@@ -1,6 +1,7 @@
 #include "Poller.h"
 #include "base/type.h"
 #include "Channel.h"
+#include "EventLoop.h"
 #include <assert.h>
 #include <poll.h>
 
@@ -85,6 +86,11 @@ void Poller::updateChannel(Channel *channel)
         }
     }
     
+}
+
+void Poller::assertInLoopThread()
+{
+    ownerLoop_->assertInLoopThread(); 
 }
 
 Poller* Poller::newDefaultPoller(EventLoop *loop)
