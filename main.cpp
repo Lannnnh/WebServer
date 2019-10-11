@@ -1,36 +1,32 @@
-#include "net/Socket.h"
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <unistd.h>
+#include <sys/timerfd.h>
+#include "net/EventLoop.h"
+#include "net/Channel.h"
 #include <string.h>
-#include <time.h>
 
-typedef struct sockaddr SA;
+EventLoop *g_loop;
+
+void timeout()
+{
+    printf("Timeout!\n");
+    g_loop->quit();
+}
 
 int main(int agrc, char* agrv[])
 {
-    char buff[2048];
-    int listenfd = socket_bind_listen(13), connfd = 0;
-    struct sockaddr_in cliaddr;
-    time_t ticks;
+    EventLoop loop;
+    g_loop = &loop;
 
-    socklen_t len;
+    int timerfd = ::timerfd_create(CLOCK_MONOTONIC, TFD_NONBLOCK | TFD_CLOEXEC);
+    Channel channel(&loop, timerfd);
+    channel.setReadCallback(timeout);
+    channel.enableReading();
 
-    for ( ; ; )
-    {
-        len = sizeof(cliaddr);
-        connfd = accept(listenfd, (SA *) &cliaddr, &len);
+    struct itimerspec howlong;
+    bzero(&howlong, sizeof(howlong));
+    howlong.it_value.tv_sec = 5;
+    timerfd_settime(timerfd, 0, &howlong, NULL);
 
-        printf("connection from %s, port %d\n",
-        inet_ntop(AF_INET, &cliaddr.sin_addr, buff, sizeof(buff)), ntohs(cliaddr.sin_port));
-
-        ticks = time(NULL);
-        snprintf(buff, sizeof(buff), "%.24s\r\n", ctime(&ticks));
-        write(connfd, buff, strlen(buff));
-
-        close(connfd);
-    }
+    loop.loop();
 
     return 0;
 }
