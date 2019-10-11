@@ -52,7 +52,7 @@ void Poller::updateChannel(Channel *channel)
 {
     assertInLoopThread();
     // LOG_TRACE << "fd = " << channel->fd() << " events = " << channel->events();
-    if (channel->index() > 0)
+    if (channel->index() < 0)
     {
         // a new one, add to pollfds_
         assert(channels_.find(channel->fd()) == channels_.end());
@@ -73,13 +73,15 @@ void Poller::updateChannel(Channel *channel)
         int idx = channel->index();
         assert(0 <= idx && idx < static_cast<int> (pollfds_.size()));
         struct pollfd &pfd =  pollfds_[idx];
+
+        // 如果某个Channel不关心任何事件，就把pollfd.fd设为 -1 | -channel->fd()-1， 让poll忽略此项。
         assert(pfd.fd == channel->fd() || pfd.fd == -1);
         pfd.events = static_cast<short> (channel->events());
         pfd.revents = 0;
-        if (channel->isNoneEvent)
+        if (channel->isNoneEvent())
         {
             // ignore this pollfd
-            pfd.fd = -1;
+            pfd.fd = -channel->fd()-1;
         }
     }
     
@@ -109,8 +111,10 @@ void Poller::removeChannel(Channel *channel)
     }
     else
     {
+        // 获取pollfds_末尾的fd，然后和channel负责的fd位置互换，channel就去了pollfds_的末尾，然后删掉
         int channelAtEnd = pollfds_.back().fd;
         iter_swap(pollfds_.begin()+idx, pollfds_.end()-1);
+        // 有可能channel不关心任何事件 fd为-channel->fd()-1
         if (channelAtEnd < 0)
         {
             channelAtEnd = -channelAtEnd-1;
