@@ -2,6 +2,7 @@
 #include "Channel.h"
 #include <unistd.h>
 #include <assert.h>
+#include <algorithm>
 
 __thread EventLoop* t_loopInThisThread = 0;
 const int kPollTimeMs = 10000;
@@ -84,7 +85,7 @@ void EventLoop::updateChannel(Channel *channel)
 
 void EventLoop::removeChannel(Channel *channel)
 {
-    assert(channel->ownerLoop == this);
+    assert(channel->ownerLoop() == this);
     assertInLoopThread();
 
     if (EventHandling_)
