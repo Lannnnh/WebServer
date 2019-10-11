@@ -9,7 +9,7 @@ const int kPollTimeMs = 10000;
 EventLoop::EventLoop()
     : looping_(false), 
       threadId_(CurrentThread::tid()),
-      EventHanding_(false),
+      EventHandling_(false),
       quit_(false),
       poller_(Poller::newDefaultPoller(this)),
       currentActiveChannel_(NULL)
@@ -49,14 +49,14 @@ void EventLoop::loop()
     {
         activeChannels_.clear();
         poller_->poll(kPollTimeMs, &activeChannels_);
-        EventHanding_ = true;
+        EventHandling_ = true;
         for (ChannelList::iterator it = activeChannels_.begin(); it != activeChannels_.end(); ++it )
         {
             currentActiveChannel_ = *it;
             (*it)->handleEvent();
         }
         currentActiveChannel_ = NULL;
-        EventHanding_ = false;
+        EventHandling_ = false;
     }
 
     // LOG_TRACE << "EventLoop " << this << " stop looping";
@@ -87,7 +87,7 @@ void EventLoop::removeChannel(Channel *channel)
     assert(channel->ownerLoop == this);
     assertInLoopThread();
 
-    if (EventHanding_)
+    if (EventHandling_)
     {
         assert(currentActiveChannel_ == channel || std::find(activeChannels_.begin(), activeChannels_.end(), channel) == activeChannels_.end());
     }

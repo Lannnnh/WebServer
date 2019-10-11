@@ -38,7 +38,7 @@ class EventLoop : nocopyable
 
         typedef std::vector<Channel*> ChannelList;
 
-        bool EventHanding_;
+        bool EventHandling_;
         bool quit_;
         ChannelList activeChannels_;
         std::unique_ptr<Poller> poller_;
