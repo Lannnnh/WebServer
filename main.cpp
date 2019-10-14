@@ -11,6 +11,7 @@ void timeout()
     g_loop->quit();
 }
 
+// poll属于level trigger
 int main(int agrc, char* agrv[])
 {
     EventLoop loop;
