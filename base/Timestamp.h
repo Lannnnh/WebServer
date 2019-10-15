@@ -1,12 +1,12 @@
 #ifndef _BASE_TIMESTAMP_H
 #define _BASE_TIMESTAMP_H
 
-#include "nocopyable.h"
+#include "copyable.h"
 #include <sys/types.h>
 #include <boost/operators.hpp>
 #include <string>
 
-class Timestamp : public nocopyable,
+class Timestamp : public copyable,
                   public boost::equality_comparable<Timestamp>,
                   public boost::less_than_comparable<Timestamp>
 {
@@ -17,10 +17,11 @@ class Timestamp : public nocopyable,
         explicit Timestamp(int64_t Arg) : microSecondsSinceEpoch_(Arg)
         {   }
 
-        Timestamp(const Timestamp &b)
-        {
-            this->microSecondsSinceEpoch_ = b.microSecondsSinceEpoch_;
-        }
+        // default copy/assignment/dtor are okay
+        // Timestamp(const Timestamp &b)
+        // {
+        //     this->microSecondsSinceEpoch_ = b.microSecondsSinceEpoch_;
+        // }
 
         void swap(Timestamp &that)
         {
