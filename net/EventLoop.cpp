@@ -1,5 +1,8 @@
 #include "EventLoop.h"
 #include "Channel.h"
+#include "base/MutexLock.h"
+#include "Socket.h"
+
 #include <unistd.h>
 #include <assert.h>
 #include <algorithm>
@@ -95,3 +98,38 @@ void EventLoop::removeChannel(Channel *channel)
     poller_->removeChannel(channel);
 }
 
+void EventLoop::wakeup()
+{
+    uint64_t one = 1;
+    ssize_t n = writen(wakeupFd_, (char *) &one, sizeof(one));
+    if (n != sizeof(one))
+    {
+        //LOG_ERROR << "EventLoop::wakeip() writes " << n << " bytes instead of 8";
+    }
+}
+
+void EventLoop::queueInLoop(Functor cb)
+{
+    {
+        MutexLockGuard lock(mutex_);
+        pendingFunctors_.push_back(std::move(cb));
+    }
+
+    if (!isInLoopThread() || callingPendingFunctors_)
+    {
+        wakeup();
+    }
+}
+
+void EventLoop::runInLoop(Functor cb)
+{
+    if (isInLoopThread())
+    {
+        cb();
+    }
+    else
+    {
+        queueInLoop(cb);
+    }
+    
+}
