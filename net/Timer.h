@@ -15,20 +15,20 @@ class Timer : nocopyable
               interval_(interval),
               repeat_(interval_ > 0.0),
               sequence_(s_numCreated_.incrementAndGet())
-    {   }
+        {   }
 
-    void run() const
-    {
-        callback_();
-    }
+        void run() const
+        {
+            callback_();
+        }
 
-    Timestamp expiration() const { return expiration_; }
-    bool repeat() const { return repeat_; }
-    int64_t sequence() const { return sequence_; }
+        Timestamp expiration() const { return expiration_; }
+        bool repeat() const { return repeat_; }
+        int64_t sequence() const { return sequence_; }
 
-    void restart(Timestamp now);
+        void restart(Timestamp now);
 
-    static int64_t numCreated() { return s_numCreated_.get(); }
+        static int64_t numCreated() { return s_numCreated_.get(); }
 
     private:
         const TimerCallback callback_;
