@@ -6,6 +6,8 @@
 #include <boost/operators.hpp>
 #include <string>
 
+
+// boost operator库允许用户在类里定义少量的操作符（如<），就可以方便地自动生成其他操作符重载，而且保证正确的语义实现。
 class Timestamp : public copyable,
                   public boost::equality_comparable<Timestamp>,
                   public boost::less_than_comparable<Timestamp>
