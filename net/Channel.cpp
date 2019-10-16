@@ -1,6 +1,7 @@
 #include "Channel.h"
 #include "EventLoop.h"
 #include <poll.h>
+#include <assert.h>
 
 const int Channel::kNoneEvent = 0;
 const int Channel::kReadEvent = POLLIN | POLLPRI;
@@ -16,6 +17,7 @@ Channel::Channel(EventLoop *loop, int fdArg)
 
 void Channel::update()
 {
+    addedToLoop_ = true;
     loop_->updateChannel(this);
 }
 
@@ -46,4 +48,9 @@ void Channel::handleEvent()
     }
 }
 
-
+void Channel::remove()
+{
+    assert(isNoneEvent());
+    addedToLoop_ = false;
+    loop_->removeChannel(this);
+}

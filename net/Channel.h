@@ -33,7 +33,7 @@ class Channel : nocopyable
 
         void enableReading() { event_ |= kReadEvent; update(); }
         // void enableWriting() { event_ |= kWriteEevnt; update(); }
-        // void disableAll() { event_ = kNoneEvent; update(); }
+        void disableAll() { event_ = kNoneEvent; update(); }
         // void disableWriting() { event_ &= ~kWriteEevnt; update(); }
         
         //for poller
@@ -41,6 +41,7 @@ class Channel : nocopyable
         void set_index(int idx) { index_ = idx; }
 
         EventLoop* ownerLoop() { return loop_; }
+        void remove();
  
     private:
         void update();
@@ -54,6 +55,8 @@ class Channel : nocopyable
         int event_;
         int revents_;
         int index_;
+
+        bool addedToLoop_;
 
         EventCallback readCallback_;
         EventCallback errorCallback_;
