@@ -29,6 +29,9 @@ class TimerQueue : nocopyable
         typedef std::pair<std::unique_ptr<Timer>, int64_t> ActiveTimer;
         typedef std::set<ActiveTimer> ActiveTimerSet;
 
+        void addTimerInLoop(Timer *timer);
+        void cancelInLoop(TimerId timerId);
+
         // call when timerfd alarms
         void hanldeRead();
 
@@ -44,6 +47,11 @@ class TimerQueue : nocopyable
 
         //timer list sorted by expiration
         TimerList timers_;
+
+        // for cancel()
+        ActiveTimerSet activeTimers_;
+        bool callingExpiredTimers_; // atomic
+        ActiveTimerSet cancelingTimers_;
 };
 
 
