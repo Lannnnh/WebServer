@@ -6,7 +6,7 @@
 
 class Timer;
 
-class TimerId : copyable
+class TimerId : public copyable
 {
     public:
         TimerId() 
