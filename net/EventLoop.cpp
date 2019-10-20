@@ -1,14 +1,27 @@
 #include "EventLoop.h"
 #include "Channel.h"
-#include "base/MutexLock.h"
 #include "Socket.h"
+#include "Poller.h"
+#include "TimerQueue.h"
 
 #include <unistd.h>
 #include <assert.h>
+#include <sys/eventfd.h>
 #include <algorithm>
 
 __thread EventLoop* t_loopInThisThread = 0;
 const int kPollTimeMs = 10000;
+
+int createEventfd()
+{
+    int evtfd = ::eventfd(0, EFD_NONBLOCK | EFD_CLOEXEC);
+    if (evtfd < 0)
+    {
+        //LOG_SYSERR << "Failed in eventfd";
+        abort();
+    }
+    return evtfd;
+}
 
 EventLoop::EventLoop()
     : looping_(false), 
@@ -16,7 +29,11 @@ EventLoop::EventLoop()
       EventHandling_(false),
       quit_(false),
       poller_(Poller::newDefaultPoller(this)),
-      currentActiveChannel_(NULL)
+      currentActiveChannel_(NULL),
+      timerQueue_(new TimerQueue(this)),
+      wakeupFd_(createEventfd()),
+      wakeupChannel_(new Channel(this, wakeupFd_)),
+      callingPendingFunctors_(false)
 {
     // LOG_TRACE << "EventLoop created " << this << " in thread " << threadId_;
     // if (t_loopInThisThread)
@@ -131,5 +148,21 @@ void EventLoop::runInLoop(Functor cb)
     {
         queueInLoop(cb);
     }
-    
+}
+
+TimerId EventLoop::runAt(Timestamp time, TimerCallback cb)
+{
+    return timerQueue_->addTimer(std::move(cb), time, 0.0);
+}
+
+TimerId EventLoop::runAfter(double delay, TimerCallback cb)
+{
+    Timestamp time(addTime(Timestamp::now(), delay));
+    return runAt(time, std::move(cb));
+}
+
+TimerId EventLoop::runEvery(double interval, TimerCallback cb)
+{
+    Timestamp time(addTime(Timestamp::now(), interval));
+    return timerQueue_->addTimer(std::move(cb), time, interval);
 }

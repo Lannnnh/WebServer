@@ -3,13 +3,17 @@
 
 #include "base/nocopyable.h"
 #include "base/CurrentThread.h"
-#include "Poller.h"
 #include "base/MutexLock.h"
+#include "TimerId.h"
+#include "base/Timestamp.h"
+#include "Callbacks.h"
 
 #include <sys/types.h>
 #include <memory>
 
 class Channel;
+class TimerQueue;
+class Poller;
 
 class EventLoop : nocopyable
 {
@@ -27,6 +31,18 @@ class EventLoop : nocopyable
 
         // queues callback in the loop thread
         void queueInLoop(Functor cb);
+
+        // run callback at time
+        // safe to call from other threads
+        TimerId runAt(Timestamp time, TimerCallback cb);
+
+        // run callback after delay seconds
+        // safe to call from other threads
+        TimerId runAfter(double delay, TimerCallback cb);
+
+        // run callback every interval seconds
+        // safe to call from other threads
+        TimerId runEvery(double interval, TimerCallback cb);
 
         void assertInLoopThread()
         {
@@ -54,6 +70,7 @@ class EventLoop : nocopyable
         bool quit_;
         ChannelList activeChannels_;
         std::unique_ptr<Poller> poller_;
+        std::unique_ptr<TimerQueue> timerQueue_;
         bool looping_;  // atomic
         const pid_t threadId_;
         Channel* currentActiveChannel_;
