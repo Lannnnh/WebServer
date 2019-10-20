@@ -120,6 +120,7 @@ std::vector<TimerQueue::Entry> TimerQueue::getExpired(Timestamp now)
         是为了映射到一个完全不同类型的意思，这个关键词在我们需要把类型映射回原有类型时用到它。
         我们映射到的类型仅仅是为了故弄玄虚和其他目的，这是所有映射中最危险的。
     */
+    // 为了得到第一个未到期的Timer的迭代器，哨兵值的Timer*转换成一个较大值，因为有可能时间戳正好为now
     Entry sentry(now, reinterpret_cast<Timer*> (UINTPTR_MAX));
     TimerList::iterator end = timers_.lower_bound(sentry);
     assert(end == timers_.end() || now < end->first);
