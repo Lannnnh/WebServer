@@ -131,6 +131,5 @@ int Thread::join()
     assert(!joined_);
     joined_ = true;
     return pthread_join(pthreadId_, NULL);
-    
 }
 
