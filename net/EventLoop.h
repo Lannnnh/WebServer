@@ -62,6 +62,8 @@ class EventLoop : nocopyable
 
     private:
         void abortNotInLoopThread();
+        void handleRead(); // wake up
+        void doPendingFunctors();
 
         typedef std::vector<Channel*> ChannelList;
 

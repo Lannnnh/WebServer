@@ -12,6 +12,7 @@
 __thread EventLoop* t_loopInThisThread = 0;
 const int kPollTimeMs = 10000;
 
+// eventfd用来进行线程间通信 因为IO线程平时阻塞在事件循环EventLoop::loop的poll调用里，为了IO线程能够立即执行用户回调，用eventfd来唤醒它
 int createEventfd()
 {
     int evtfd = ::eventfd(0, EFD_NONBLOCK | EFD_CLOEXEC);
@@ -78,6 +79,7 @@ void EventLoop::loop()
         }
         currentActiveChannel_ = NULL;
         EventHandling_ = false;
+        doPendingFunctors();
     }
 
     // LOG_TRACE << "EventLoop " << this << " stop looping";
@@ -87,6 +89,12 @@ void EventLoop::loop()
 void EventLoop::quit()
 {
     quit_ = true;
+
+    // 如果不是IO线程调用quit，则需要wakeup唤醒IO线程，因为IO线程可能还阻塞在poll这个位置，这样重新循环判断while(!quit)才能推出循环
+    if (!isInLoopThread())
+    {
+        wakeup();
+    }
 }
 
 void EventLoop::abortNotInLoopThread()
@@ -125,6 +133,7 @@ void EventLoop::wakeup()
     }
 }
 
+// 唤醒IO线程的条件 1. 调用queueInLoop的不是IO线程 2. 调用queueInLoop时，正在调用pending functor
 void EventLoop::queueInLoop(Functor cb)
 {
     {
@@ -165,4 +174,23 @@ TimerId EventLoop::runEvery(double interval, TimerCallback cb)
 {
     Timestamp time(addTime(Timestamp::now(), interval));
     return timerQueue_->addTimer(std::move(cb), time, interval);
+}
+
+// swap的好处 1. 减小了临界区的长度（不会阻塞其他线程调用queueInLoop()） 2. 避免了死锁（functor有可能再调用queueInLoop()）
+void EventLoop::doPendingFunctors()
+{
+    std::vector<EventLoop::Functor> functors;
+    callingPendingFunctors_ = true;
+
+    {
+        MutexLockGuard lock(mutex_);
+        functors.swap(pendingFunctors_);
+    }
+
+    for (size_t i = 0; i < functors.size(); ++i )
+    {
+        functors[i]();
+    }
+
+    callingPendingFunctors_ = false;
 }
