@@ -30,6 +30,7 @@ EventLoop *EventLoopThread::startLoop()
     EventLoop *loop = NULL;
     {
         MutexLockGuard lock(mutex_);
+        // 等待threadFunc在Thread里面运行起来
         while (loop_ == NULL)
         {
             cond_.wait();
