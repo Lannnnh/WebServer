@@ -1,0 +1,61 @@
+#ifndef _NET_TCPCONNECTION_H
+#define _NET_TCPCONNECTION_H
+
+#include "base/nocopyable.h"
+#include "base/type.h"
+#include "Callbacks.h"
+#include "Buffer.h"
+
+#include <memory>
+#include <netinet/in.h>
+#include <boost/any.hpp>
+
+class EventLoop;
+class Socket;
+class Channel;
+
+
+// enable_shared_from_this是一个以其派生类模板类型实参的基类模板，继承它，this指针就能变身为shared_ptr。
+// 注意，shared_from_this()不能在构造函数里面使用，因为那个时候this还没有被交给shared_ptr接管。
+class TcpConnection : nocopyable, public std::enable_shared_from_this<TcpConnection>
+{
+    public:
+        TcpConnection(EventLoop *loop,
+                      const std::string &name,
+                      int sockfd,
+                      const struct ::sockaddr_in &lockAddr,
+                      const struct ::sockaddr_in &peerAddr);
+        ~TcpConnection();
+
+        EventLoop* getLoop() const { return loop_; }
+        const std::string& name() { return name_; }
+        const struct ::sockaddr_in& localAddr() const { return localAddr_; }
+        const struct ::sockaddr_in& peerAddr() const { return peerAddr_; }
+        bool connected() const { return state_ == kConnected; }
+        bool disconnected() const { state_ == kDisconnected; }
+        // return true if success, continue
+    private:
+        enum stateE { kDisconnected, kConnecting, kConnected, kDisconnecting };
+
+        void setState(stateE s) {}
+
+        EventLoop *loop_;
+        std::string name_;
+        stateE state_;
+        bool reading_;
+        // we don't expose those classes to client.
+        std::unique_ptr<Socket> socket_;
+        std::unique_ptr<Channel> channel_;
+        struct ::sockaddr_in localAddr_;
+        struct ::sockaddr_in peerAddr_;
+        ConnectionCallback connectionCallback_;
+        MessageCallback messageCallback_; 
+        WriteCompleteCallback writeCompleteCallback_;
+        HighWaterMarkCallback highWaterMarkCallback_;
+        CloseCallback closeCallback_;
+        size_t highWaterMark_;
+        Buffer inputBuffer_;
+        Buffer outputBuffer_; // FIXME: use list<Buffer> as output buffer.
+};
+
+#endif // end _NET_TCPCONNECTION_H
