@@ -126,7 +126,7 @@ void EventLoop::removeChannel(Channel *channel)
 void EventLoop::wakeup()
 {
     uint64_t one = 1;
-    ssize_t n = writen(wakeupFd_, (char *) &one, sizeof(one));
+    ssize_t n = sockets::write(wakeupFd_, &one, sizeof(one));
     if (n != sizeof(one))
     {
         //LOG_ERROR << "EventLoop::wakeip() writes " << n << " bytes instead of 8";
