@@ -18,6 +18,7 @@ Acceptor::Acceptor(EventLoop *loop, const struct sockaddr_in *listenaddr, bool r
     acceptSocket_.setReuseAddr(true);
     acceptSocket_.setReusePort(reuseport);
     acceptSocket_.bindAddress(listenaddr);
+    acceptChannel_.setReadCallback(std::bind(&Acceptor::hanldeRead, this));
 }
 
 Acceptor::~Acceptor()

@@ -9,7 +9,11 @@
 #include <netinet/in.h>
 
 class EventLoop;
-
+/*
+    muduo中限制并发连接数：
+        为它增加一个int成员（muduo::AtomicInt32类型），表示当前连接数。然后判断当前活动数。
+        如果超过最大允许数，则踢掉连接。可以积极地防止耗尽fd。
+*/
 class Acceptor : nocopyable
 {
     public:
