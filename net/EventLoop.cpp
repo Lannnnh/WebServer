@@ -75,7 +75,7 @@ void EventLoop::loop()
         for (ChannelList::iterator it = activeChannels_.begin(); it != activeChannels_.end(); ++it )
         {
             currentActiveChannel_ = *it;
-            (*it)->handleEvent();
+            (*it)->handleEvent(); // bug
         }
         currentActiveChannel_ = NULL;
         EventHandling_ = false;
@@ -121,6 +121,13 @@ void EventLoop::removeChannel(Channel *channel)
         assert(currentActiveChannel_ == channel || std::find(activeChannels_.begin(), activeChannels_.end(), channel) == activeChannels_.end());
     }
     poller_->removeChannel(channel);
+}
+
+bool EventLoop::hasChannel(Channel *channel)
+{
+    assert(channel->ownerLoop() == this);
+    assertInLoopThread();
+    return poller_->hasChannel(channel); // bug
 }
 
 void EventLoop::wakeup()

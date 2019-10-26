@@ -2,6 +2,7 @@
 #include "base/type.h"
 #include "Channel.h"
 #include "EventLoop.h"
+
 #include <assert.h>
 #include <poll.h>
 
@@ -129,4 +130,11 @@ void Poller::removeChannel(Channel *channel)
         pollfds_.pop_back();
     }
     
+}
+
+bool Poller::hasChannel(Channel *channel)
+{
+    assertInLoopThread();
+    ChannelMap::const_iterator it = channels_.find(channel->fd());
+    return it != channels_.end() && it->second == channel;
 }

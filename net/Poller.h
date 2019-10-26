@@ -2,11 +2,11 @@
 #define _NET_POLLER_H
 
 #include "base/nocopyable.h"
+#include "base/Timestamp.h"
+
 #include <functional>
 #include <map>
 #include <vector>
-//#include "EventLoop.h"
-#include "base/Timestamp.h"
 
 struct pollfd;
 class Channel;
@@ -24,6 +24,7 @@ class Poller : nocopyable
 
         void updateChannel(Channel *channel);
         void removeChannel(Channel *channel);
+        bool hasChannel(Channel *channel);
         void assertInLoopThread();
         static Poller *newDefaultPoller(EventLoop *loop);
 

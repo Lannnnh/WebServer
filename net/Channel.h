@@ -16,15 +16,24 @@ class Channel : nocopyable
 {
     public:
         typedef std::function<void()> EventCallback;
-        Channel(EventLoop *loop, int fd);
+        typedef std::function<void (Timestamp)> ReadEventCallback;
 
-        void handleEvent();
-        void setReadCallback(const EventCallback& cb)
-        { readCallback_ = cb; }
-        void setWriteCallback(const EventCallback& cb)
-        { writeCallbak_ = cb; }
-        void setErrorCallback(const EventCallback& cb)
-        { errorCallback_ = cb; }
+        Channel(EventLoop *loop, int fd);
+        ~Channel();
+
+        void handleEvent(Timestamp receiveTime);
+        void setReadCallback(ReadEventCallback cb)
+        { readCallback_ = std::move(cb); }
+        void setWriteCallback(EventCallback cb)
+        { writeCallbak_ = std::move(cb); }
+        void setErrorCallback(EventCallback cb)
+        { errorCallback_ = std::move(cb); }
+        void setCloseCallback(EventCallback cb)
+        { closeCallback_ = std::move(cb); }
+
+        // tie this channel to the owner object managed by shared_ptr
+        // prevent the owner object being destroyed in handleEvnet
+        void tie(const std::shared_ptr<void> &);
 
         int fd() const { return fd_; }
         int events() const { return event_; }
@@ -32,19 +41,25 @@ class Channel : nocopyable
         bool isNoneEvent() const { return event_ == kNoneEvent; }
 
         void enableReading() { event_ |= kReadEvent; update(); }
-        // void enableWriting() { event_ |= kWriteEevnt; update(); }
+        void enableWriting() { event_ |= kWriteEvent; update(); }
         void disableAll() { event_ = kNoneEvent; update(); }
-        // void disableWriting() { event_ &= ~kWriteEevnt; update(); }
+        void disableWriting() { event_ &= ~kWriteEvent; update(); }
+        void disableReading() { event_ &= ~kReadEvent; update(); }
+        bool isReading() const { return event_ & kReadEvent; }
+        bool isWriting() const { return event_ & kWriteEvent; }
         
         //for poller
         int index() { return index_; }
         void set_index(int idx) { index_ = idx; }
+
+        void doNotLogHup() { logHup_ = false; }
 
         EventLoop* ownerLoop() { return loop_; }
         void remove();
  
     private:
         void update();
+        void handleEventWithGuard(Timestamp receiveTime);
 
         static const int kNoneEvent;
         static const int kReadEvent;
@@ -55,10 +70,15 @@ class Channel : nocopyable
         int event_;
         int revents_;
         int index_;
+        bool logHup_;
 
+        std::weak_ptr<void> tie_;
+        bool tied_;
+        bool eventHandling_;
         bool addedToLoop_;
 
-        EventCallback readCallback_;
+        ReadEventCallback readCallback_;
+        EventCallback closeCallback_;
         EventCallback errorCallback_;
         EventCallback writeCallbak_;
 };

@@ -59,6 +59,7 @@ class EventLoop : nocopyable
         void wakeup();
         void updateChannel(Channel *channel);
         void removeChannel(Channel *Channel);
+        bool hasChannel(Channel* channel);
 
     private:
         void abortNotInLoopThread();
