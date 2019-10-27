@@ -25,7 +25,7 @@ class Channel : nocopyable
         void setReadCallback(ReadEventCallback cb)
         { readCallback_ = std::move(cb); }
         void setWriteCallback(EventCallback cb)
-        { writeCallbak_ = std::move(cb); }
+        { writeCallback_ = std::move(cb); }
         void setErrorCallback(EventCallback cb)
         { errorCallback_ = std::move(cb); }
         void setCloseCallback(EventCallback cb)
@@ -80,7 +80,7 @@ class Channel : nocopyable
         ReadEventCallback readCallback_;
         EventCallback closeCallback_;
         EventCallback errorCallback_;
-        EventCallback writeCallbak_;
+        EventCallback writeCallback_;
 };
 
 
