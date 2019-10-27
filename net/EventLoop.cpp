@@ -65,17 +65,17 @@ void EventLoop::loop()
     assertInLoopThread();
     looping_ = true;
     quit_ = false;
-
+    // LOG_TRACE << "EventLoop " << this << " start looping";
 
     while (!quit_)
     {
         activeChannels_.clear();
-        poller_->poll(kPollTimeMs, &activeChannels_);
+        pollReturnTime_ = poller_->poll(kPollTimeMs, &activeChannels_);
         EventHandling_ = true;
         for (ChannelList::iterator it = activeChannels_.begin(); it != activeChannels_.end(); ++it )
         {
             currentActiveChannel_ = *it;
-            (*it)->handleEvent(); // bug
+            (*it)->handleEvent(pollReturnTime_);
         }
         currentActiveChannel_ = NULL;
         EventHandling_ = false;
@@ -127,7 +127,7 @@ bool EventLoop::hasChannel(Channel *channel)
 {
     assert(channel->ownerLoop() == this);
     assertInLoopThread();
-    return poller_->hasChannel(channel); // bug
+    return poller_->hasChannel(channel);
 }
 
 void EventLoop::wakeup()

@@ -76,6 +76,7 @@ class EventLoop : nocopyable
         std::unique_ptr<TimerQueue> timerQueue_;
         bool looping_;  // atomic
         const pid_t threadId_;
+        Timestamp pollReturnTime_;
         Channel* currentActiveChannel_;
         int wakeupFd_;
         // unlike in TimerQueue, whis is an internal class,
