@@ -23,6 +23,7 @@ namespace sockets
     ssize_t write(int sockfd, const void *buf, size_t count);
     void close(int sockfd);
     void shutdownWrite(int sockfd);
+    int getSocketError(int sockfd);
 }
 
 class Socket : nocopyable
