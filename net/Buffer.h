@@ -56,6 +56,8 @@ class Buffer : public copyable
             writerIndex_ = kCheapPrepend;
         }
 
+        // 如果正好读完了所有可读的空间，那么readerIndex_和writerIndex_都退回到kCheapPrepend，避免空间浪费
+        // 如果读不完，那么readerIndex_读取len个数据即可
         void retrieve(size_t len)
         {
             assert(len <= readableBytes());
