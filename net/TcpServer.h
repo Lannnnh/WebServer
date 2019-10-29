@@ -16,6 +16,13 @@ class Acceptor;
 class TcpServer : nocopyable
 {
     public:
+        typedef std::function<void (EventLoop*)> ThreadInitCallback;
+        enum Option
+        {
+            kNoReusePost,
+            kReusePort,
+        };
+
         TcpServer();
         ~TcpServer();
 
@@ -23,16 +30,21 @@ class TcpServer : nocopyable
         // not thread safe, but in loop
         void newConnection(int sockfd, const struct ::sockaddr_in *peeraddr);
 
-        //typedef std::map<std::string, TcpConnectionPtr> ConnectionMap;
+        typedef std::map<std::string, TcpConnectionPtr> ConnectionMap;
 
-        EventLoop *loop_;
+        EventLoop *loop_; // the acceptor loop
         const std::string name_;
+        const std::string ipPort_;
         std::unique_ptr<Acceptor> acceptor_;
-        //ConnectionCallback connectionCallback_;
-        //MessageCallback messageCallback_;
-        bool started_;
+        //std::unique_ptr<EventLoopThreadPool> threadPool_;
+        ConnectionCallback connectionCallback_;
+        MessageCallback messageCallback_;
+        WriteCompleteCallback writeCompleteCallback_;
+        ThreadInitCallback threadInitCallback_;
+        AtomicInt32 started_;
+        // always in loop thread
         int nextConnId_;
-        //ConnectionMap connections_;
+        ConnectionMap connections_;
 };
 
 #endif // end _NET_TCPSERVER_H
