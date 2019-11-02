@@ -2,15 +2,6 @@
 #include "EventLoop.h"
 #include "Acceptor.h"
 
-TcpServer::TcpServer()
-{
-
-}
-
-TcpServer::~TcpServer()
-{
-
-}
 
 
 void TcpServer::newConnection(int sockfd, const struct ::sockaddr_in *peeraddr)
