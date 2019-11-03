@@ -25,6 +25,7 @@ namespace sockets
     void close(int sockfd);
     void shutdownWrite(int sockfd);
     int getSocketError(int sockfd);
+    std::string toIpPort(const struct ::sockaddr_in *addr);
 }
 
 class Socket : nocopyable

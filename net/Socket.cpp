@@ -157,6 +157,7 @@
 #include <netinet/tcp.h>
 #include <sys/socket.h>
 #include <sys/uio.h>
+#include <arpa/inet.h>
 #include <unistd.h>
 
 int sockets::getSocketError(int sockfd)
@@ -172,6 +173,13 @@ int sockets::getSocketError(int sockfd)
     {
         return optval;
     }
+}
+
+std::string toIpPort(const struct ::sockaddr_in *addr)
+{
+    char buf[64] = "";
+    ::inet_ntop(AF_INET, &addr->sin_port, buf, sizeof(buf));
+    return buf;
 }
 
 int sockets::createNonblockingOrDie(sa_family_t family)
