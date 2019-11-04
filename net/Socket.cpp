@@ -175,7 +175,7 @@ int sockets::getSocketError(int sockfd)
     }
 }
 
-std::string toIpPort(const struct ::sockaddr_in *addr)
+std::string sockets::toIpPort(const struct ::sockaddr_in *addr)
 {
     char buf[64] = "";
     ::inet_ntop(AF_INET, &addr->sin_port, buf, sizeof(buf));
