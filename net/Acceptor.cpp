@@ -39,8 +39,8 @@ void Acceptor::listen()
 void Acceptor::hanldeRead()
 {
     loop_->assertInLoopThread();
-    struct ::sockaddr_in *peeraddr;
-    int connfd = acceptSocket_.accept(peeraddr);
+    struct ::sockaddr_in peeraddr;
+    int connfd = acceptSocket_.accept(&peeraddr);
 
     if (connfd >= 0)
     {

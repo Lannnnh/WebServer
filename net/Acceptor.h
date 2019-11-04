@@ -17,7 +17,7 @@ class EventLoop;
 class Acceptor : nocopyable
 {
     public:
-        typedef std::function<void (int sockfd, const struct sockaddr_in*)> NewConnectionCalback;
+        typedef std::function<void (int sockfd, const struct sockaddr_in&)> NewConnectionCalback;
         Acceptor(EventLoop *loop, const struct sockaddr_in *listenaddr, bool reuseport);
         ~Acceptor();
 
