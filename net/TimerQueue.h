@@ -24,16 +24,16 @@ class TimerQueue : nocopyable
 
     private:
         // use unique_ptr instead of raw pointer
-        typedef std::pair<Timestamp, std::unique_ptr<Timer>> Entry;
+        typedef std::pair<Timestamp, Timer*> Entry;
         typedef std::set<Entry> TimerList;
-        typedef std::pair<std::unique_ptr<Timer>, int64_t> ActiveTimer;
+        typedef std::pair<Timer*, int64_t> ActiveTimer;
         typedef std::set<ActiveTimer> ActiveTimerSet;
 
         void addTimerInLoop(Timer *timer);
         void cancelInLoop(TimerId timerId);
 
         // call when timerfd alarms
-        void hanldeRead();
+        void handleRead();
 
         // move out all expired timers
         std::vector<Entry> getExpired(Timestamp now);
