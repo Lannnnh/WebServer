@@ -189,5 +189,4 @@ void Connector::retry(int sockfd)
     {
         // LOG_DEBUG << "don't connect";
     }
-    
 }
