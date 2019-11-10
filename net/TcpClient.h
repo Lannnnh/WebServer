@@ -12,7 +12,7 @@ class TcpClient : nocopyable
 {
     public:
         TcpClient(EventLoop *loop,
-                  const ::sockaddr_in &serverAddr,
+                  const struct ::sockaddr_in &serverAddr,
                   const std::string &name);
         ~TcpClient(); // force out-line dtor, for std::unique_ptr membres.
 
@@ -49,7 +49,7 @@ class TcpClient : nocopyable
 
     private:
         // not thread safe, but in loop
-        void newConnection();
+        void newConnection(int sockfd);
         // not thread safe, but in loop
         void removeConnection(const TcpConnectionPtr &conn);
 
