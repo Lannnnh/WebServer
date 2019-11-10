@@ -12,12 +12,12 @@
 #include <errno.h>
 
 TcpConnection::TcpConnection(EventLoop *loop,
-                             const std::string &nameArg,
+                             const std::string &name,
                              int sockfd,
                              const ::sockaddr_in &localAddr,
                              const ::sockaddr_in &peerAddr)
     : loop_(loop),
-      name_(nameArg),
+      name_(name),
       state_(kConnecting),
       reading_(false),
       socket_(new Socket(sockfd)),
