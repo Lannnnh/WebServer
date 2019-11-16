@@ -4,6 +4,8 @@
 #include "MutexLock.h"
 #include "nocopyable.h"
 #include <pthread.h>
+#include <time.h>
+#include <errno.h>
 
 
 class Condition : nocopyable
@@ -37,6 +39,14 @@ class Condition : nocopyable
         void notifyall()
         {
             pthread_cond_broadcast(&cond);
+        }
+
+        bool waitForSeconds(int seconds)
+        {
+            struct timespec abstime;
+            clock_gettime(CLOCK_REALTIME, &abstime);
+            abstime.tv_sec += static_cast<time_t> (seconds);
+            return ETIMEDOUT == pthread_cond_timedwait(&cond, mutex.get(), &abstime);
         }
 
     private:
