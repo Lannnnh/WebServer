@@ -111,9 +111,6 @@ class LogStream : nocopyable
         const Buffer& buffer() { return buffer_; }
         void resetBuffer() { buffer_.reset(); }
 
-
-
-
     private:
         void staticCheck();
 
