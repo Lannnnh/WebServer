@@ -11,7 +11,7 @@
 class Condition : nocopyable
 {
     public:
-        explicit Condition(MutexLock &_mutex)
+        explicit Condition(MutexLock& _mutex)
             : mutex(_mutex)
         {
             pthread_cond_init(&cond, NULL);

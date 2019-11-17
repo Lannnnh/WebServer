@@ -44,7 +44,7 @@ class MutexLock : nocopyable
 class MutexLockGuard : nocopyable
 {
     public: 
-        explicit MutexLockGuard(MutexLock &_mutex) 
+        explicit MutexLockGuard(MutexLock& _mutex) 
             : mutex(_mutex)
         {
             mutex.lock();
@@ -56,7 +56,7 @@ class MutexLockGuard : nocopyable
         }
 
     private:
-        MutexLock &mutex;
+        MutexLock& mutex;
 };
 
 #endif // _BASE_MUTEXLCOK_H
