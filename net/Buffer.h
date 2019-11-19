@@ -119,6 +119,11 @@ class Buffer : public copyable
             append(static_cast<const char*> (data), len);
         }
 
+        void append(const std::string str)
+        {
+            append(str.data(), str.size());
+        }
+
         void prepend(const void *data, size_t len)
         {
             assert(len <= prependableBytes());
