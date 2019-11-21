@@ -50,6 +50,12 @@ class Buffer : public copyable
             return begin() + readerIndex_;
         }
 
+        const char* findCRLF() const
+        {
+            const char* crlf = std::search(peek(), beginWrite(), kCRLF, kCRLF+2);
+            return crlf == beginWrite() ? NULL : crlf;
+        }
+
         void retrieveAll()
         {
             readerIndex_ = kCheapPrepend;
