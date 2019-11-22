@@ -16,7 +16,7 @@ void removeConnector(const ConnectorPtr &connector)
 }
 
 TcpClient::TcpClient(EventLoop *loop,
-                     const struct ::sockaddr_in &serverAddr,
+                     const struct sockaddr_in &serverAddr,
                      const std::string &name)
     : loop_(loop),
       connector_(new Connector(loop, serverAddr)),
@@ -94,22 +94,22 @@ void TcpClient::stop()
 void TcpClient::newConnection(int sockfd)
 {
     loop_->assertInLoopThread();
-    struct ::sockaddr_in peerAddr;
+    struct sockaddr_in peerAddr;
     // get peerAddress
     memset(&peerAddr, 0, sizeof(peerAddr));
     socklen_t peerLen = static_cast<socklen_t> (sizeof(peerAddr));
-    ::getpeername(sockfd, static_cast<struct ::sockaddr*> (implicit_cast<void*> (&peerAddr)), &peerLen);
+    ::getpeername(sockfd, static_cast<struct sockaddr*> (implicit_cast<void*> (&peerAddr)), &peerLen);
 
     char buf[32];
     snprintf(buf, sizeof(buf), ":%s#%d", sockets::toIpPort(&peerAddr).c_str(), nextConnId_);
     ++nextConnId_;
     std::string connName = name_ + buf;
 
-    struct ::sockaddr_in localAddr;
+    struct sockaddr_in localAddr;
     // get localAddr
     memset(&localAddr, 0, sizeof(localAddr));
     socklen_t localLen = static_cast<socklen_t> (sizeof(localAddr));
-    ::getsockname(sockfd, static_cast<struct ::sockaddr*> (implicit_cast<void*> (&localAddr)), &localLen);
+    ::getsockname(sockfd, static_cast<struct sockaddr*> (implicit_cast<void*> (&localAddr)), &localLen);
 
     TcpConnectionPtr conn(new TcpConnection(loop_,
                                             connName,

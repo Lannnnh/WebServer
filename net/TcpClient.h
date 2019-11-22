@@ -12,7 +12,7 @@ class TcpClient : nocopyable
 {
     public:
         TcpClient(EventLoop *loop,
-                  const struct ::sockaddr_in &serverAddr,
+                  const struct sockaddr_in &serverAddr,
                   const std::string &name);
         ~TcpClient(); // force out-line dtor, for std::unique_ptr membres.
 
