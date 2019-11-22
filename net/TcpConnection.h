@@ -23,14 +23,14 @@ class TcpConnection : nocopyable, public std::enable_shared_from_this<TcpConnect
         TcpConnection(EventLoop *loop,
                       const std::string &name,
                       int sockfd,
-                      const struct ::sockaddr_in &lockAddr,
-                      const struct ::sockaddr_in &peerAddr);
+                      const struct sockaddr_in &lockAddr,
+                      const struct sockaddr_in &peerAddr);
         ~TcpConnection();
 
         EventLoop* getLoop() const { return loop_; }
         const std::string& name() { return name_; }
-        const struct ::sockaddr_in& localAddr() const { return localAddr_; }
-        const struct ::sockaddr_in& peerAddr() const { return peerAddr_; }
+        const struct sockaddr_in& localAddr() const { return localAddr_; }
+        const struct sockaddr_in& peerAddr() const { return peerAddr_; }
         bool connected() const { return state_ == kConnected; }
         bool disconnected() const { state_ == kDisconnected; }
         // send
@@ -97,8 +97,8 @@ class TcpConnection : nocopyable, public std::enable_shared_from_this<TcpConnect
         // we don't expose those classes to client.
         std::unique_ptr<Socket> socket_;
         std::unique_ptr<Channel> channel_;
-        struct ::sockaddr_in localAddr_;
-        struct ::sockaddr_in peerAddr_;
+        struct sockaddr_in localAddr_;
+        struct sockaddr_in peerAddr_;
         ConnectionCallback connectionCallback_;
         MessageCallback messageCallback_; 
         WriteCompleteCallback writeCompleteCallback_;

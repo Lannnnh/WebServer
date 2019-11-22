@@ -14,8 +14,8 @@
 TcpConnection::TcpConnection(EventLoop *loop,
                              const std::string &name,
                              int sockfd,
-                             const ::sockaddr_in &localAddr,
-                             const ::sockaddr_in &peerAddr)
+                             const struct sockaddr_in &localAddr,
+                             const struct sockaddr_in &peerAddr)
     : loop_(loop),
       name_(name),
       state_(kConnecting),
