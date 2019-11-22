@@ -7,7 +7,7 @@
 #include <unistd.h>
 #include <assert.h>
 
-Acceptor::Acceptor(EventLoop *loop, const struct sockaddr_in *listenaddr, bool reuseport)
+Acceptor::Acceptor(EventLoop *loop, const struct sockaddr_in *listenAddr, bool reuseport)
     : loop_(loop),
       acceptSocket_(sockets::createNonblockingOrDie(AF_INET)),
       acceptChannel_(loop, acceptSocket_.fd()),
@@ -17,7 +17,7 @@ Acceptor::Acceptor(EventLoop *loop, const struct sockaddr_in *listenaddr, bool r
     assert(idleFd_ >= 0);
     acceptSocket_.setReuseAddr(true);
     acceptSocket_.setReusePort(reuseport);
-    acceptSocket_.bindAddress(listenaddr);
+    acceptSocket_.bindAddress(listenAddr);
     acceptChannel_.setReadCallback(std::bind(&Acceptor::hanldeRead, this));
 }
 
@@ -39,7 +39,7 @@ void Acceptor::listen()
 void Acceptor::hanldeRead()
 {
     loop_->assertInLoopThread();
-    struct ::sockaddr_in peeraddr;
+    struct sockaddr_in peeraddr;
     int connfd = acceptSocket_.accept(&peeraddr);
 
     if (connfd >= 0)
