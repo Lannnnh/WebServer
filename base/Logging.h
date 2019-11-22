@@ -39,4 +39,6 @@ class Logger
         static std::string logFileName_;
 };
 
+#define LOG Logger(__FILE__, __LINE__).stream()
+
 #endif // end _BASE_LOGGING_H
