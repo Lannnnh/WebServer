@@ -10,7 +10,7 @@
 
 const int Connector::kMaxRetryDelayMs;
 
-Connector::Connector(EventLoop *loop, const struct ::sockaddr_in &serverAddr)
+Connector::Connector(EventLoop *loop, const struct sockaddr_in &serverAddr)
     : loop_(loop),
       serverAddr_(serverAddr),
       connect_(false),
@@ -66,7 +66,7 @@ void Connector::stopInLoop()
 void Connector::connect()
 {
     int sockfd = sockets::createNonblockingOrDie(serverAddr_.sin_family);
-    int ret = sockets::connect(sockfd, static_cast<struct ::sockaddr*> (implicit_cast<void*> (&serverAddr_)));
+    int ret = sockets::connect(sockfd, static_cast<struct sockaddr*> (implicit_cast<void*> (&serverAddr_)));
     int savedErrno = (ret == 0) ? 0 : errno;
     switch (savedErrno)
     {

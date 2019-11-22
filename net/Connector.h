@@ -16,7 +16,7 @@ class Connector : nocopyable,
     public:
         typedef std::function<void (int sockfd)> NewConnectionCallback;
 
-        Connector(EventLoop *loop, const struct ::sockaddr_in &serverAddr);
+        Connector(EventLoop *loop, const struct sockaddr_in &serverAddr);
         ~Connector();
 
         void setNewConnectionCallback(const NewConnectionCallback &cb)
@@ -26,7 +26,7 @@ class Connector : nocopyable,
         void restart(); // must be called in loop thread
         void stop(); // can be called in any thread
 
-        const struct ::sockaddr_in& serverAddress() const { return serverAddr_; }
+        const struct sockaddr_in& serverAddress() const { return serverAddr_; }
 
     private:
         enum States { kDisconnected, kConnecting, kConnected};
@@ -45,7 +45,7 @@ class Connector : nocopyable,
         void resetChannel();
 
         EventLoop *loop_;
-        struct ::sockaddr_in serverAddr_;
+        struct sockaddr_in serverAddr_;
         bool connect_;
         States state_;
         std::unique_ptr<Channel> channel_;
