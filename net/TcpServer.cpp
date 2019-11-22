@@ -8,7 +8,7 @@
 #include <memory>
 
 TcpServer::TcpServer(EventLoop *loop,
-                     const ::sockaddr_in &listenAddr,
+                     const struct sockaddr_in &listenAddr,
                      const std::string &name,
                      Option option)
     : loop_(loop),
@@ -56,7 +56,7 @@ void TcpServer::start()
     }
 }
 
-void TcpServer::newConnection(int sockfd, const struct ::sockaddr_in &peerAddr)
+void TcpServer::newConnection(int sockfd, const struct sockaddr_in &peerAddr)
 {
     loop_->assertInLoopThread();
     EventLoop *ioLoop = threadPool_->getNextLoop();
@@ -69,9 +69,9 @@ void TcpServer::newConnection(int sockfd, const struct ::sockaddr_in &peerAddr)
     //          << "] - new connection [" << connName
     //          << "] from " << sockets::toIpPort(peeraddr);
 
-    struct ::sockaddr_in localAddr;
+    struct sockaddr_in localAddr;
     socklen_t addrLen = sizeof(localAddr);
-    ::getsockname(sockfd, static_cast<struct ::sockaddr*> (implicit_cast<void*> (&localAddr)), &addrLen);
+    ::getsockname(sockfd, static_cast<struct sockaddr*> (implicit_cast<void*> (&localAddr)), &addrLen);
 
     TcpConnectionPtr conn(new TcpConnection(ioLoop,
                                             connName,

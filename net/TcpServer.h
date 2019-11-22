@@ -25,7 +25,7 @@ class TcpServer : nocopyable
         };
 
         TcpServer(EventLoop *loop,
-                  const ::sockaddr_in &listenAddr,
+                  const struct sockaddr_in &listenAddr,
                   const std::string &name,
                   Option option = kNoReusePost);
         ~TcpServer(); // force out-line dtor, for unqiue_ptr members.
@@ -65,7 +65,7 @@ class TcpServer : nocopyable
 
     private:
         // not thread safe, but in loop
-        void newConnection(int sockfd, const struct ::sockaddr_in &peeraddr);
+        void newConnection(int sockfd, const struct sockaddr_in &peeraddr);
         // thread safe
         void removeConnection(const TcpConnectionPtr &conn);
         // not thread safe, but in loop
