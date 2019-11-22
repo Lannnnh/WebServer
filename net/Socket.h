@@ -4,6 +4,7 @@
 #include "base/nocopyable.h"
 
 #include <string>
+#include <arpa/inet.h>
 
 // int socket_bind_listen(int port);
 // ssize_t writen(int fd, const void *vptr, size_t n);
@@ -16,16 +17,16 @@ namespace sockets
     int createNonblockingOrDie(sa_family_t family);
 
     int  connect(int sockfd, const struct sockaddr* addr);
-    void bindOrDie(int sockfd, const struct sockaddr* addr);
+    void bindOrDie(int sockfd, struct sockaddr* addr);
     void listenOrDie(int sockfd);
-    int  accept(int sockfd, struct sockaddr_in6* addr);
+    int  accept(int sockfd, struct sockaddr_in* addr);
     ssize_t read(int sockfd, void *buf, size_t count);
-    ssize_t readv(int sockfd, const struct ::iovec *iov, int iovcnt);
+    ssize_t readv(int sockfd, const struct ::iovec* iov, int iovcnt);
     ssize_t write(int sockfd, const void *buf, size_t count);
     void close(int sockfd);
     void shutdownWrite(int sockfd);
     int getSocketError(int sockfd);
-    std::string toIpPort(const struct ::sockaddr_in *addr);
+    std::string toIpPort(const struct sockaddr_in *addr);
 }
 
 class Socket : nocopyable
