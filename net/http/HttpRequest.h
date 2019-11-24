@@ -32,7 +32,7 @@ class HttpRequest : public copyable
             version_ = v;
         }
 
-        Version getVersion()
+        Version getVersion() const
         {
             return version_;
         }
