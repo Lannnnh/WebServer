@@ -35,6 +35,7 @@ class TcpConnection : nocopyable, public std::enable_shared_from_this<TcpConnect
         bool disconnected() const { state_ == kDisconnected; }
         // send
         void send(const void *messeage, int len);
+        void send(const std::string& str);
         void send(Buffer *message); // this one will swap data
         void shutdown(); // not thread safe, no simitaneous calling
         void forceClose();
@@ -44,6 +45,21 @@ class TcpConnection : nocopyable, public std::enable_shared_from_this<TcpConnect
         void startRead();
         void stopRead();
         bool isReading() const { return reading_; }
+
+        void setContext(const boost::any& context)
+        {
+            context_ = context;
+        }
+
+        const boost::any& getContext() const
+        {
+            return context_;
+        }
+
+        boost::any* getMutableContext()
+        {
+            return &context_;
+        }
 
         void setConnectionCallback(const ConnectionCallback &cb)
         { connectionCallback_ = cb; }
@@ -107,6 +123,7 @@ class TcpConnection : nocopyable, public std::enable_shared_from_this<TcpConnect
         size_t highWaterMark_;
         Buffer inputBuffer_;
         Buffer outputBuffer_; // FIXME: use list<Buffer> as output buffer.
+        boost::any context_;
 };
 
 #endif // end _NET_TCPCONNECTION_H

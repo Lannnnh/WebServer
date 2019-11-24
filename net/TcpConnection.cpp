@@ -10,6 +10,7 @@
 #include "Socket.h"
 
 #include <errno.h>
+#include <string.h>
 
 TcpConnection::TcpConnection(EventLoop *loop,
                              const std::string &name,
@@ -48,7 +49,7 @@ void TcpConnection::send(const void *message, int len)
     {
         if (loop_->isInLoopThread())
         {
-            sendInLoop(message, ::strlen(static_cast<const char *>(message)));
+            sendInLoop(message, strlen(static_cast<const char *>(message)));
         }
         else
         {
@@ -56,9 +57,14 @@ void TcpConnection::send(const void *message, int len)
             loop_->runInLoop(std::bind(fp, 
                              this, 
                              message, 
-                             ::strlen(static_cast<const char *> (message))));
+                             strlen(static_cast<const char *> (message))));
         }
     }
+}
+
+void TcpConnection::send(const std::string& str)
+{
+    send(str.data(), str.size());
 }
 
 void TcpConnection::send(Buffer *buf)

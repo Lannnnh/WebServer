@@ -36,7 +36,7 @@ class HttpServer : nocopyable
         void onMessage(const TcpConnectionPtr& conn,
                        Buffer* buf,
                        Timestamp receiveTime);
-        void onRequest(const TcpConnectionPtr&, const HttpRequest&);
+        void onRequest(const TcpConnectionPtr& conn, const HttpRequest& req);
 
         TcpServer server_;
         HttpCallback httpCallback_;
