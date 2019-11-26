@@ -1,9 +1,9 @@
 #include "Thread.h"
+
 #include <stdio.h>
 #include <sys/types.h>
 #include <unistd.h>
 #include <string>
-#include <iostream>
 #include <assert.h>
 #include <sys/prctl.h>
 #include <memory>

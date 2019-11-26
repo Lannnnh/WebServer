@@ -1,9 +1,9 @@
 #ifndef _NET_TCPCLIENT_H
 #define _NET_TCPCLIENT_H
 
-#include "base/MutexLock.h"
+#include "WebServer/base/MutexLock.h"
 #include "TcpConnection.h"
-#include "base/nocopyable.h"
+#include "WebServer/base/nocopyable.h"
 
 class Connector;
 typedef std::shared_ptr<Connector> ConnectorPtr;

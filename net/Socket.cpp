@@ -1,5 +1,5 @@
 #include "Socket.h"
-#include "base/type.h"
+#include "WebServer/base/type.h"
 
 #include <netinet/in.h>
 #include <stdio.h>
@@ -42,7 +42,7 @@ int sockets::createNonblockingOrDie(sa_family_t family)
     return sockfd;
 }
 
-void sockets::bindOrDie(int sockfd, const struct sockaddr *addr)
+void sockets::bindOrDie(int sockfd, const struct sockaddr* addr)
 {
     int ret = ::bind(sockfd, addr, static_cast<socklen_t>(sizeof(struct sockaddr_in)));
     if (ret < 0)

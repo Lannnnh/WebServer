@@ -54,7 +54,7 @@ class AtomicIntegerT : nocopyable
 
         T getAndSet(T newValue)
         {
-            return __sync__lock_test_and_set(&value, newValue);
+            return __sync_lock_test_and_set(&value_, newValue);
         }
 
     private:

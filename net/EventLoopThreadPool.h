@@ -1,8 +1,8 @@
 #ifndef _NET_EVENTLOOPTHREADPOOL_H
 #define _NET_EVENTLOOPTHREADPOOL_H
 
-#include "base/nocopyable.h"
-#include "base/type.h"
+#include "WebServer/base/nocopyable.h"
+#include "WebServer/base/type.h"
 
 #include <functional>
 #include <memory>
@@ -30,7 +30,7 @@ class EventLoopThreadPool : nocopyable
 
         std::vector<EventLoop*> getAllLoops();
 
-        bool started() const { return started; }
+        bool started() const { return started_; }
         const std::string& name() const { return name_; }
 
     private:

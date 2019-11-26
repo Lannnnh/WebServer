@@ -30,7 +30,7 @@ Acceptor::~Acceptor()
 
 void Acceptor::listen()
 {
-    loop_->assertInLoopThread;
+    loop_->assertInLoopThread();
     listenning_ = true;
     acceptSocket_.listen();
     acceptChannel_.enableReading();

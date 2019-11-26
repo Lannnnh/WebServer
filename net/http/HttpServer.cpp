@@ -1,8 +1,8 @@
 #include "HttpServer.h"
-#include "base/Logging.h"
-#include "http/HttpContext.h"
-#include "http/HttpRequest.h"
-#include "http/HttpResponse.h"
+#include "WebServer/base/Logging.h"
+#include "HttpContext.h"
+#include "HttpRequest.h"
+#include "HttpResponse.h"
 
 void defaultHttpCallback(const HttpRequest&, HttpResponse* resp)
 {

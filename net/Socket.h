@@ -1,7 +1,7 @@
 #ifndef _NET_SOCKET_H_
 #define _NET_SOCKET_H_
 
-#include "base/nocopyable.h"
+#include "WebServer/base/nocopyable.h"
 
 #include <string>
 #include <arpa/inet.h>
@@ -17,7 +17,7 @@ namespace sockets
     int createNonblockingOrDie(sa_family_t family);
 
     int  connect(int sockfd, const struct sockaddr* addr);
-    void bindOrDie(int sockfd, struct sockaddr* addr);
+    void bindOrDie(int sockfd, const struct sockaddr* addr);
     void listenOrDie(int sockfd);
     int  accept(int sockfd, struct sockaddr_in* addr);
     ssize_t read(int sockfd, void *buf, size_t count);

@@ -1,7 +1,7 @@
 #ifndef _NET_CALLBACKS_H
 #define _NET_CALLBACKS_H
 
-#include "base/Timestamp.h"
+#include "WebServer/base/Timestamp.h"
 
 #include <functional>
 #include <memory>
@@ -13,13 +13,13 @@ using std::placeholders::_3;
 template<typename T>
 inline T* get_pointer(const std::shared_ptr<T> &ptr)
 {
-    return ptr->get();
+    return ptr.get();
 }
 
 template<typename T>
 inline T* get_pointer(const std::unique_ptr<T> &ptr)
 {
-    return ptr->get();
+    return ptr.get();
 }
 
 class Buffer;

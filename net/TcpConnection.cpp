@@ -6,11 +6,27 @@
 #include "TcpConnection.h"
 #include "Channel.h"
 #include "EventLoop.h"
-#include "base/WeakCallback.h"
+#include "WebServer/base/WeakCallback.h"
 #include "Socket.h"
 
 #include <errno.h>
 #include <string.h>
+
+void defaultConnectionCallback(const TcpConnectionPtr& conn)
+{
+//   LOG_TRACE << conn->localAddress().toIpPort() << " -> "
+//             << conn->peerAddress().toIpPort() << " is "
+//             << (conn->connected() ? "UP" : "DOWN");
+  // do not call conn->forceClose(), because some users want to register message callback only.
+}
+
+void defaultMessageCallback(const TcpConnectionPtr& conn,
+                                        Buffer* buffer,
+                                        Timestamp receiveTime)
+{
+    buffer->retrieveAll();
+}
+
 
 TcpConnection::TcpConnection(EventLoop *loop,
                              const std::string &name,
@@ -233,6 +249,16 @@ void TcpConnection::handleRead(Timestamp receiveTime)
         errno = savedErrno;
         // LOG_SYSERR << "TcpConnection::handleRead";
         handleError();
+    }
+}
+
+void TcpConnection::shutdownInLoop()
+{
+    loop_->assertInLoopThread();
+    if (!channel_->isWriting())
+    {
+    // we are not writing
+    socket_->shutdownWrite();
     }
 }
 

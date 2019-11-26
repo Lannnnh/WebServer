@@ -26,7 +26,7 @@ class FixedBuffer : nocopyable
         {
             if (avail() > static_cast<int> (len))
             {
-                memccpy(cur_, buf, len);
+                memcpy(cur_, buf, len);
                 cur_ += len;
             }
         }
