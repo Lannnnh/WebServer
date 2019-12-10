@@ -111,8 +111,6 @@ class LogStream : nocopyable
         void resetBuffer() { buffer_.reset(); }
 
     private:
-        void staticCheck();
-
         template<typename T>
         void formatInterger(T);
 
