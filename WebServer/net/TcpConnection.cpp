@@ -18,7 +18,7 @@ void defaultConnectionCallback(const TcpConnectionPtr& conn)
 //   LOG << conn->localAddress().toIpPort() << " -> "
 //             << conn->peerAddress().toIpPort() << " is "
 //             << (conn->connected() ? "UP" : "DOWN");
-  // do not call conn->forceClose(), because some users want to register message callback only.
+//   do not call conn->forceClose(), because some users want to register message callback only.
 }
 
 void defaultMessageCallback(const TcpConnectionPtr& conn,
@@ -29,11 +29,11 @@ void defaultMessageCallback(const TcpConnectionPtr& conn,
 }
 
 
-TcpConnection::TcpConnection(EventLoop *loop,
-                             const std::string &name,
+TcpConnection::TcpConnection(EventLoop* loop,
+                             const std::string& name,
                              int sockfd,
-                             const struct sockaddr_in &localAddr,
-                             const struct sockaddr_in &peerAddr)
+                             const struct sockaddr_in& localAddr,
+                             const struct sockaddr_in& peerAddr)
     : loop_(loop),
       name_(name),
       state_(kConnecting),
@@ -60,7 +60,7 @@ TcpConnection::~TcpConnection()
     assert(state_ == kDisconnected);
 }
 
-void TcpConnection::send(const void *message, int len)
+void TcpConnection::send(const void* message, int len)
 {
     send(std::string(static_cast<const char*> (message), len));
 }
@@ -84,7 +84,7 @@ void TcpConnection::send(const std::string& str)
     }
 }
 
-void TcpConnection::send(Buffer *buf)
+void TcpConnection::send(Buffer* buf)
 {
     if (state_ == kConnected)
     {
@@ -109,7 +109,7 @@ void TcpConnection::sendInLoop(const std::string& message)
     sendInLoop(message.data(), message.size());
 }
 
-void TcpConnection::sendInLoop(const void *message, size_t len)
+void TcpConnection::sendInLoop(const void* message, size_t len)
 {
     loop_->assertInLoopThread();
     ssize_t nwrote = 0;

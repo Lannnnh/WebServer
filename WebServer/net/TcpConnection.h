@@ -20,11 +20,11 @@ class Channel;
 class TcpConnection : nocopyable, public std::enable_shared_from_this<TcpConnection>
 {
     public:
-        TcpConnection(EventLoop *loop,
-                      const std::string &name,
+        TcpConnection(EventLoop* loop,
+                      const std::string& name,
                       int sockfd,
-                      const struct sockaddr_in &lockAddr,
-                      const struct sockaddr_in &peerAddr);
+                      const struct sockaddr_in& localAddr,
+                      const struct sockaddr_in& peerAddr);
         ~TcpConnection();
 
         EventLoop* getLoop() const { return loop_; }
@@ -34,9 +34,9 @@ class TcpConnection : nocopyable, public std::enable_shared_from_this<TcpConnect
         bool connected() const { return state_ == kConnected; }
         bool disconnected() const { state_ == kDisconnected; }
         // send
-        void send(const void *messeage, int len);
+        void send(const void* messeage, int len);
         void send(const std::string& str);
-        void send(Buffer *message); // this one will swap data
+        void send(Buffer* message); // this one will swap data
         void shutdown(); // not thread safe, no simitaneous calling
         void forceClose();
         void forceCloseWithDelay(double seconds);
@@ -61,16 +61,16 @@ class TcpConnection : nocopyable, public std::enable_shared_from_this<TcpConnect
             return &context_;
         }
 
-        void setConnectionCallback(const ConnectionCallback &cb)
+        void setConnectionCallback(const ConnectionCallback& cb)
         { connectionCallback_ = cb; }
 
-        void setMessageCallback(const MessageCallback &cb)
+        void setMessageCallback(const MessageCallback& cb)
         { messageCallback_ = cb; }
 
-        void setWriteCompleteCallback(const WriteCompleteCallback &cb)
+        void setWriteCompleteCallback(const WriteCompleteCallback& cb)
         { writeCompleteCallback_ = cb; }
 
-        void setHighWaterMarkCallback(const HighWaterMarkCallback &cb, size_t highWaterMark)
+        void setHighWaterMarkCallback(const HighWaterMarkCallback& cb, size_t highWaterMark)
         { highWaterMarkCallback_ = cb; highWaterMark_ = highWaterMark; }
 
         // advanced interface
@@ -85,9 +85,9 @@ class TcpConnection : nocopyable, public std::enable_shared_from_this<TcpConnect
         { closeCallback_ = cb; }
 
         // called when TcpServer accepts a new connection
-        void connectEstablished(); // should be called only once
+        void connectEstablished(); // 应该只被调用一次
         // called when TcpServer has removed me from its map
-        void connectDestroyed(); // should be called only once
+        void connectDestroyed(); // 应该只被调用一次
 
 
     private:
@@ -97,7 +97,7 @@ class TcpConnection : nocopyable, public std::enable_shared_from_this<TcpConnect
         void handleClose();
         void handleError();
 
-        void sendInLoop(const void *message, size_t len);
+        void sendInLoop(const void* message, size_t len);
         void sendInLoop(const std::string& message);
         void shutdownInLoop();
 
@@ -106,11 +106,11 @@ class TcpConnection : nocopyable, public std::enable_shared_from_this<TcpConnect
         void startReadInLoop();
         void stopReadInLoop();
 
-        EventLoop *loop_;
+        EventLoop* loop_;
         const std::string name_;
         stateE state_;
         bool reading_;
-        // we don't expose those classes to client.
+        // don't expose those classes to client.
         std::unique_ptr<Socket> socket_;
         std::unique_ptr<Channel> channel_;
         const struct sockaddr_in localAddr_;
@@ -122,7 +122,7 @@ class TcpConnection : nocopyable, public std::enable_shared_from_this<TcpConnect
         CloseCallback closeCallback_;
         size_t highWaterMark_;
         Buffer inputBuffer_;
-        Buffer outputBuffer_; // FIXME: use list<Buffer> as output buffer.
+        Buffer outputBuffer_;
         boost::any context_;
 };
 

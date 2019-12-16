@@ -8,9 +8,9 @@
 #include <stdio.h>
 #include <memory>
 
-TcpServer::TcpServer(EventLoop *loop,
-                     const struct sockaddr_in &listenAddr,
-                     const std::string &name,
+TcpServer::TcpServer(EventLoop* loop,
+                     const struct sockaddr_in& listenAddr,
+                     const std::string& name,
                      Option option)
     : loop_(loop),
       ipPort_(sockets::toIpPort(&listenAddr)),
@@ -101,6 +101,6 @@ void TcpServer::removeConnectionInLoop(const TcpConnectionPtr &conn)
     size_t n = connections_.erase(conn->name());
     (void) n;
     assert(n == 1);
-    EventLoop *ioLoop = conn->getLoop();
+    EventLoop* ioLoop = conn->getLoop();
     ioLoop->queueInLoop(std::bind(&TcpConnection::connectDestroyed, conn));
 }

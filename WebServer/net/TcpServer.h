@@ -24,9 +24,9 @@ class TcpServer : nocopyable
             kReusePort,
         };
 
-        TcpServer(EventLoop *loop,
-                  const struct sockaddr_in &listenAddr,
-                  const std::string &name,
+        TcpServer(EventLoop* loop,
+                  const struct sockaddr_in& listenAddr,
+                  const std::string& name,
                   Option option = kNoReusePost);
         ~TcpServer(); // force out-line dtor, for unqiue_ptr members.
 
@@ -53,26 +53,26 @@ class TcpServer : nocopyable
         void start();
 
         // not thread safe.
-        void setConnectionCallback(const ConnectionCallback &cb)
+        void setConnectionCallback(const ConnectionCallback& cb)
         { connectionCallback_ = cb; }
         //not thread safe
-        void setMessageCallback(const MessageCallback &cb)
+        void setMessageCallback(const MessageCallback& cb)
         { messageCallback_ = cb; }
         // not thread safe
-        void setWriteCompleteCallback(const WriteCompleteCallback &cb)
+        void setWriteCompleteCallback(const WriteCompleteCallback& cb)
         { writeCompleteCallback_ = cb; }
 
     private:
         // not thread safe, but in loop
-        void newConnection(int sockfd, const struct sockaddr_in &peeraddr);
+        void newConnection(int sockfd, const struct sockaddr_in& peeraddr);
         // thread safe
-        void removeConnection(const TcpConnectionPtr &conn);
+        void removeConnection(const TcpConnectionPtr& conn);
         // not thread safe, but in loop
-        void removeConnectionInLoop(const TcpConnectionPtr &conn);
+        void removeConnectionInLoop(const TcpConnectionPtr& conn);
 
         typedef std::map<std::string, TcpConnectionPtr> ConnectionMap;
 
-        EventLoop *loop_; // the acceptor loop
+        EventLoop* loop_; // the acceptor loop
         const std::string name_;
         const std::string ipPort_;
         std::unique_ptr<Acceptor> acceptor_;
