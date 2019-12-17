@@ -52,22 +52,22 @@ class TcpServer : nocopyable
         // thread safe
         void start();
 
-        // not thread safe.
+        // 非线程安全
         void setConnectionCallback(const ConnectionCallback& cb)
         { connectionCallback_ = cb; }
-        //not thread safe
+        // 非线程安全
         void setMessageCallback(const MessageCallback& cb)
         { messageCallback_ = cb; }
-        // not thread safe
+        // 非线程安全
         void setWriteCompleteCallback(const WriteCompleteCallback& cb)
         { writeCompleteCallback_ = cb; }
 
     private:
-        // not thread safe, but in loop
+        // 非线程安全
         void newConnection(int sockfd, const struct sockaddr_in& peeraddr);
-        // thread safe
+        // 线程安全
         void removeConnection(const TcpConnectionPtr& conn);
-        // not thread safe, but in loop
+        // 非线程安全
         void removeConnectionInLoop(const TcpConnectionPtr& conn);
 
         typedef std::map<std::string, TcpConnectionPtr> ConnectionMap;

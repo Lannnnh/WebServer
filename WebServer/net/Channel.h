@@ -68,7 +68,7 @@ class Channel : nocopyable
         static const int kReadEvent;
         static const int kWriteEvent;
 
-        EventLoop *loop_;
+        EventLoop* loop_;
         const int fd_;
         int event_;
         int revents_;

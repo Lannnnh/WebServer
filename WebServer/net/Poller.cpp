@@ -93,7 +93,6 @@ void Poller::updateChannel(Channel *channel)
             pfd.fd = -channel->fd()-1;
         }
     }
-    
 }
 
 void Poller::assertInLoopThread()
