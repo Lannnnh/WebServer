@@ -3,6 +3,7 @@
 #include <sys/time.h>
 #include <stdio.h>
 
+// 使用PRId64需要定义这个宏定义
 #ifndef __STDC_FORMAT_MACROS
 #define __STDC_FORMAT_MACROS
 #endif

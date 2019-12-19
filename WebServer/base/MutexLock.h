@@ -28,7 +28,7 @@ class MutexLock : nocopyable
             pthread_mutex_unlock(&mutex);
         }
         
-        pthread_mutex_t *get()
+        pthread_mutex_t* get()
         {
             return &mutex;
         }

@@ -17,12 +17,12 @@ class EventLoopThread : nocopyable
 
         EventLoopThread(const ThreadInitCallback &cb = ThreadInitCallback(), const std::string &name = std::string());
         ~EventLoopThread();
-        EventLoop *startLoop();
+        EventLoop* startLoop();
 
     private:
         void threadFunc();
 
-        EventLoop *loop_;
+        EventLoop* loop_;
         bool exiting_;
         Thread thread_;
         MutexLock mutex_;

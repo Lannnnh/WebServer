@@ -50,7 +50,7 @@ class Condition : nocopyable
         }
 
     private:
-        MutexLock &mutex;
+        MutexLock& mutex;
         pthread_cond_t cond;
 };
 
