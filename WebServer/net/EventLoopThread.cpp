@@ -3,7 +3,7 @@
 
 #include <assert.h>
 
-EventLoopThread::EventLoopThread(const ThreadInitCallback &cb, const std::string &name) 
+EventLoopThread::EventLoopThread(const ThreadInitCallback& cb, const std::string& name) 
     : loop_(NULL),
       exiting_(false),
       thread_(std::bind(&EventLoopThread::threadFunc, this), name),
@@ -22,12 +22,12 @@ EventLoopThread::~EventLoopThread()
     }
 }
 
-EventLoop *EventLoopThread::startLoop()
+EventLoop* EventLoopThread::startLoop()
 {
     assert(!thread_.started());
     thread_.start();
 
-    EventLoop *loop = NULL;
+    EventLoop* loop = NULL;
     {
         MutexLockGuard lock(mutex_);
         // 等待threadFunc在Thread里面运行起来

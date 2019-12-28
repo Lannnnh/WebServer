@@ -8,9 +8,9 @@
 #include <stdio.h>
 #include <memory>
 
-TcpServer::TcpServer(EventLoop *loop,
-                     const struct sockaddr_in &listenAddr,
-                     const std::string &name,
+TcpServer::TcpServer(EventLoop* loop,
+                     const struct sockaddr_in& listenAddr,
+                     const std::string& name,
                      Option option)
     : loop_(loop),
       ipPort_(sockets::toIpPort(&listenAddr)),
@@ -30,7 +30,7 @@ TcpServer::~TcpServer()
     loop_->assertInLoopThread();
     LOG << "TcpServer::~TcpServer [" << name_ << "] destructing";
 
-    for (auto &item : connections_)
+    for (auto& item : connections_)
     {
         TcpConnectionPtr conn(item.second);
         item.second.reset();
@@ -57,10 +57,10 @@ void TcpServer::start()
     }
 }
 
-void TcpServer::newConnection(int sockfd, const struct sockaddr_in &peerAddr)
+void TcpServer::newConnection(int sockfd, const struct sockaddr_in& peerAddr)
 {
     loop_->assertInLoopThread();
-    EventLoop *ioLoop = threadPool_->getNextLoop();
+    EventLoop* ioLoop = threadPool_->getNextLoop();
     char buf[64];
     snprintf(buf, sizeof(buf), "-%s#%d", ipPort_.c_str(), nextConnId_);
     ++nextConnId_;
@@ -88,12 +88,12 @@ void TcpServer::newConnection(int sockfd, const struct sockaddr_in &peerAddr)
     ioLoop->runInLoop(std::bind(&TcpConnection::connectEstablished, conn));
 }
 
-void TcpServer::removeConnection(const TcpConnectionPtr &conn)
+void TcpServer::removeConnection(const TcpConnectionPtr& conn)
 {
     loop_->runInLoop(std::bind(&TcpServer::removeConnectionInLoop, this, conn));
 }
 
-void TcpServer::removeConnectionInLoop(const TcpConnectionPtr &conn)
+void TcpServer::removeConnectionInLoop(const TcpConnectionPtr& conn)
 {
     loop_->assertInLoopThread();
     LOG << "TcpServer::removeConnectionInLoop [" << name_
@@ -101,6 +101,6 @@ void TcpServer::removeConnectionInLoop(const TcpConnectionPtr &conn)
     size_t n = connections_.erase(conn->name());
     (void) n;
     assert(n == 1);
-    EventLoop *ioLoop = conn->getLoop();
+    EventLoop* ioLoop = conn->getLoop();
     ioLoop->queueInLoop(std::bind(&TcpConnection::connectDestroyed, conn));
 }

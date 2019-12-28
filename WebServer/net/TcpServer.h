@@ -24,9 +24,9 @@ class TcpServer : nocopyable
             kReusePort,
         };
 
-        TcpServer(EventLoop *loop,
-                  const struct sockaddr_in &listenAddr,
-                  const std::string &name,
+        TcpServer(EventLoop* loop,
+                  const struct sockaddr_in& listenAddr,
+                  const std::string& name,
                   Option option = kNoReusePost);
         ~TcpServer(); // force out-line dtor, for unqiue_ptr members.
 
@@ -52,27 +52,27 @@ class TcpServer : nocopyable
         // thread safe
         void start();
 
-        // not thread safe.
-        void setConnectionCallback(const ConnectionCallback &cb)
+        // 非线程安全
+        void setConnectionCallback(const ConnectionCallback& cb)
         { connectionCallback_ = cb; }
-        //not thread safe
-        void setMessageCallback(const MessageCallback &cb)
+        // 非线程安全
+        void setMessageCallback(const MessageCallback& cb)
         { messageCallback_ = cb; }
-        // not thread safe
-        void setWriteCompleteCallback(const WriteCompleteCallback &cb)
+        // 非线程安全
+        void setWriteCompleteCallback(const WriteCompleteCallback& cb)
         { writeCompleteCallback_ = cb; }
 
     private:
-        // not thread safe, but in loop
-        void newConnection(int sockfd, const struct sockaddr_in &peeraddr);
-        // thread safe
-        void removeConnection(const TcpConnectionPtr &conn);
-        // not thread safe, but in loop
-        void removeConnectionInLoop(const TcpConnectionPtr &conn);
+        // 非线程安全
+        void newConnection(int sockfd, const struct sockaddr_in& peeraddr);
+        // 线程安全
+        void removeConnection(const TcpConnectionPtr& conn);
+        // 非线程安全
+        void removeConnectionInLoop(const TcpConnectionPtr& conn);
 
         typedef std::map<std::string, TcpConnectionPtr> ConnectionMap;
 
-        EventLoop *loop_; // the acceptor loop
+        EventLoop* loop_; // the acceptor loop
         const std::string name_;
         const std::string ipPort_;
         std::unique_ptr<Acceptor> acceptor_;

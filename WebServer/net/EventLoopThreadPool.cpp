@@ -4,7 +4,7 @@
 
 #include <stdio.h>
 
-EventLoopThreadPool::EventLoopThreadPool(EventLoop *baseloop, const std::string &name)
+EventLoopThreadPool::EventLoopThreadPool(EventLoop* baseloop, const std::string& name)
     : baseLoop_(baseloop),
       name_(name),
       started_(false),
@@ -17,7 +17,7 @@ EventLoopThreadPool::~EventLoopThreadPool()
     // don't delete loop, it's stack variable
 }
 
-void EventLoopThreadPool::start(const ThreadInitCallback &cb)
+void EventLoopThreadPool::start(const ThreadInitCallback& cb)
 {
     assert(!started_);
     baseLoop_->assertInLoopThread();
@@ -28,7 +28,7 @@ void EventLoopThreadPool::start(const ThreadInitCallback &cb)
     {
         char buf[name_.size() + 32];
         snprintf(buf, sizeof(buf), "%s%d", name_.c_str(), i);
-        EventLoopThread *t = new EventLoopThread(cb, buf);
+        EventLoopThread* t = new EventLoopThread(cb, buf);
         threads.push_back(std::unique_ptr<EventLoopThread> (t));
         loops_.push_back(t->startLoop());
     }
@@ -43,7 +43,7 @@ EventLoop* EventLoopThreadPool::getNextLoop()
 {
     baseLoop_->assertInLoopThread();
     assert(started_);
-    EventLoop *loop = baseLoop_;
+    EventLoop* loop = baseLoop_;
 
     if (!loops_.empty())
     {
@@ -62,7 +62,7 @@ EventLoop* EventLoopThreadPool::getNextLoop()
 EventLoop* EventLoopThreadPool::getLoopForHash(size_t hashCode)
 {
     baseLoop_->assertInLoopThread();
-    EventLoop *loop = baseLoop_;
+    EventLoop* loop = baseLoop_;
 
     if (!loops_.empty())
     {

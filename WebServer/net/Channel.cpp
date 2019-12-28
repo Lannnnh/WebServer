@@ -31,7 +31,7 @@ Channel::~Channel()
     }
 }
 
-void Channel::tie(const std::shared_ptr<void> &obj)
+void Channel::tie(const std::shared_ptr<void>& obj)
 {
     tie_ = obj;
     tied_ = true;

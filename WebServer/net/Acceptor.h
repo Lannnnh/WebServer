@@ -18,10 +18,10 @@ class Acceptor : nocopyable
 {
     public:
         typedef std::function<void (int sockfd, const struct sockaddr_in&)> NewConnectionCalback;
-        Acceptor(EventLoop *loop, const struct sockaddr_in& listenaddr, bool reuseport);
+        Acceptor(EventLoop* loop, const struct sockaddr_in& listenaddr, bool reuseport);
         ~Acceptor();
 
-        void setNewConnectionCallback(const NewConnectionCalback &cb)
+        void setNewConnectionCallback(const NewConnectionCalback& cb)
         {
             newConnectionCallback_ = cb;
         }
@@ -32,7 +32,7 @@ class Acceptor : nocopyable
     private:
         void hanldeRead();
 
-        EventLoop *loop_;
+        EventLoop* loop_;
         Socket acceptSocket_;
         Channel acceptChannel_;
         NewConnectionCalback newConnectionCallback_;

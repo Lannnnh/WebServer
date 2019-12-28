@@ -16,13 +16,13 @@ class EventLoopThreadPool : nocopyable
     public:
         typedef std::function<void (EventLoop*)> ThreadInitCallback;
 
-        EventLoopThreadPool(EventLoop *baseLoop, const std::string &name);
+        EventLoopThreadPool(EventLoop* baseLoop, const std::string& name);
         ~EventLoopThreadPool();
         void setThreadNum(int numThreads) { numThreads_ = numThreads; }
         void start(const ThreadInitCallback& cb = ThreadInitCallback());
 
         // valid after calling start()
-        // round-robin
+        // round-robin 轮询调度算法
         EventLoop* getNextLoop();
         
         // with the same hash code, it will always return the same EventLoop
@@ -34,7 +34,7 @@ class EventLoopThreadPool : nocopyable
         const std::string& name() const { return name_; }
 
     private:
-        EventLoop *baseLoop_;
+        EventLoop* baseLoop_;
         std::string name_;
         bool started_;
         int numThreads_;

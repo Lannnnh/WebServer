@@ -72,7 +72,7 @@ struct ThreadData
     ThreadFunc func_;
     std::string name_;
     pid_t* tid_;
-    CountDownLatch *latch_;
+    CountDownLatch* latch_;
 
     ThreadData(const ThreadFunc& func, const std::string& name, pid_t* tid, CountDownLatch* latch)
       : func_(func),
@@ -97,7 +97,7 @@ struct ThreadData
     }
 };
 
-void *startThread(void* obj)
+void* startThread(void* obj)
 {
     ThreadData *data = static_cast<ThreadData*> (obj);
     data->runInThread();
@@ -122,7 +122,6 @@ void Thread::start()
         latch_.wait();
         assert(tid_ > 0);
     }
-
 }
 
 int Thread::join()
