@@ -3,6 +3,7 @@
 
 #include "WebServer/base/nocopyable.h"
 #include "WebServer/base/Timestamp.h"
+#include "WebServer/net/EventLoop.h"
 
 #include <functional>
 #include <map>
@@ -10,7 +11,6 @@
 
 struct epoll_event;
 class Channel;
-class EventLoop;
 
 class Epoller : nocopyable
 {
@@ -25,7 +25,10 @@ class Epoller : nocopyable
         void updateChannel(Channel* channel);
         void removeChannel(Channel* channel);
         bool hasChannel(Channel* channel);
-        void assertInLoopThread() const;
+        void assertInLoopThread() const 
+        {
+            ownerLoop_->assertInLoopThread();
+        }
         static Epoller* newDefaultPoller(EventLoop* loop);
 
     protected:
