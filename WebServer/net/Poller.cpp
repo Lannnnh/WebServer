@@ -62,7 +62,7 @@ void Poller::updateChannel(Channel *channel)
     LOG << "fd = " << channel->fd() << " events = " << channel->events();
     if (channel->index() < 0)
     {
-        // a new one, add to pollfds_
+        // 增加一个新的去pollfds_
         assert(channels_.find(channel->fd()) == channels_.end());
         struct pollfd pfd;
         pfd.fd = channel->fd();
@@ -75,7 +75,7 @@ void Poller::updateChannel(Channel *channel)
     }
     else
     {
-        // update existing one
+        // 更新一个已经存在的
         assert(channels_.find(channel->fd()) != channels_.end());
         assert(channels_[channel->fd()] == channel);
         int idx = channel->index();
