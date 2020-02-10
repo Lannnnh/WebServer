@@ -1,14 +1,9 @@
 #ifndef _NET_EPOLLER_H
 #define _NET_EPOLLER_H
 
-<<<<<<< HEAD
 #include "nocopyable.h"
 #include "Timestamp.h"
-=======
-#include "WebServer/base/nocopyable.h"
-#include "WebServer/base/Timestamp.h"
-#include "WebServer/net/EventLoop.h"
->>>>>>> 1683a00cadccbba4d0f2bf08172d11c643f84afa
+#include "EventLoop.h"
 
 #include <functional>
 #include <map>
