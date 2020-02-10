@@ -1,8 +1,14 @@
 #ifndef _NET_EPOLLER_H
 #define _NET_EPOLLER_H
 
+<<<<<<< HEAD
 #include "nocopyable.h"
 #include "Timestamp.h"
+=======
+#include "WebServer/base/nocopyable.h"
+#include "WebServer/base/Timestamp.h"
+#include "WebServer/net/EventLoop.h"
+>>>>>>> 1683a00cadccbba4d0f2bf08172d11c643f84afa
 
 #include <functional>
 #include <map>
@@ -10,7 +16,6 @@
 
 struct epoll_event;
 class Channel;
-class EventLoop;
 
 class Epoller : nocopyable
 {
@@ -25,7 +30,10 @@ class Epoller : nocopyable
         void updateChannel(Channel* channel);
         void removeChannel(Channel* channel);
         bool hasChannel(Channel* channel);
-        void assertInLoopThread() const;
+        void assertInLoopThread() const 
+        {
+            ownerLoop_->assertInLoopThread();
+        }
         static Epoller* newDefaultPoller(EventLoop* loop);
 
     protected:
