@@ -10,16 +10,15 @@ set(net_SRCS
     EventLoopThreadPool.cpp
     Poller.cpp
     Socket.cpp
-    TcpClient.cpp
     TcpConnection.cpp
     TcpServer.cpp
     Timer.cpp
     TimerQueue.cpp
 )
 
-include_directories(/home/lan/beap)
+include_directories(${PROJECT_SOURCE_DIR}/WebServer/base)
 
 add_library(net ${net_SRCS})
-target_link_libraries(net /home/lan/beap/WebServer/base/libbase.a)
+target_link_libraries(net ${PROJECT_SOURCE_DIR}/WebServer/base/libbase.a)
 
 add_subdirectory(http)

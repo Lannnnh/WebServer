@@ -1,11 +1,11 @@
 #ifndef _NET_EVENTLOOP_
 #define _NET_EVENTLOOP_
 
-#include "WebServer/base/nocopyable.h"
-#include "WebServer/base/CurrentThread.h"
-#include "WebServer/base/MutexLock.h"
+#include "nocopyable.h"
+#include "CurrentThread.h"
+#include "MutexLock.h"
 #include "TimerId.h"
-#include "WebServer/base/Timestamp.h"
+#include "Timestamp.h"
 #include "Callbacks.h"
 
 #include <sys/types.h>

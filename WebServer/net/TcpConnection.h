@@ -1,8 +1,8 @@
 #ifndef _NET_TCPCONNECTION_H
 #define _NET_TCPCONNECTION_H
 
-#include "WebServer/base/nocopyable.h"
-#include "WebServer/base/type.h"
+#include "nocopyable.h"
+#include "type.h"
 #include "Callbacks.h"
 #include "Buffer.h"
 

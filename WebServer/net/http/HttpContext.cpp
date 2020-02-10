@@ -1,4 +1,4 @@
-#include "WebServer/net/Buffer.h"
+#include "Buffer.h"
 #include "HttpContext.h"
 
 bool HttpContext::processRequestLine(const char* begin, const char* end)

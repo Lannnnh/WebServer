@@ -3,7 +3,7 @@
 
 #include "Socket.h"
 #include "Channel.h"
-#include "WebServer/base/nocopyable.h"
+#include "nocopyable.h"
 
 #include <functional>
 #include <netinet/in.h>

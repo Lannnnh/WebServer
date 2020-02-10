@@ -6,8 +6,8 @@
     每个channel对象自始自终只负责一个文件描述符（fd）的IO事件分发，但它并不拥有，析构时不会关闭fd。
 */
 
-#include "WebServer/base/nocopyable.h"
-#include "WebServer/base/Timestamp.h"
+#include "nocopyable.h"
+#include "Timestamp.h"
 
 #include <string>
 #include <memory>

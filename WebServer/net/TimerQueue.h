@@ -1,9 +1,9 @@
 #ifndef _NET_TIMERQUEUE_H
 #define _NET_TIMERQUEUE_H
 
-#include "WebServer/base/nocopyable.h"
+#include "nocopyable.h"
 #include "Callbacks.h"
-#include "WebServer/base/Timestamp.h"
+#include "Timestamp.h"
 #include "Channel.h"
 
 #include <set>

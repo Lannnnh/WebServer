@@ -1,8 +1,8 @@
 #ifndef _NET_POLLER_H
 #define _NET_POLLER_H
 
-#include "WebServer/base/nocopyable.h"
-#include "WebServer/base/Timestamp.h"
+#include "nocopyable.h"
+#include "Timestamp.h"
 
 #include <functional>
 #include <map>

@@ -1,9 +1,9 @@
 #ifndef _NET_TIMER_H
 #define _NET_TIMER_H
 
-#include "WebServer/base/nocopyable.h"
-#include "WebServer/base/Atomic.h"
-#include "WebServer/base/Timestamp.h"
+#include "nocopyable.h"
+#include "Atomic.h"
+#include "Timestamp.h"
 #include "Callbacks.h"
 
 class Timer : nocopyable

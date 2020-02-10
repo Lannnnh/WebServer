@@ -1,9 +1,9 @@
 #ifndef _NET_HTTP_HTTPREQUEST_H
 #define _NET_HTTP_HTTPREQUEST_H
 
-#include "WebServer/base/copyable.h"
-#include "WebServer/base/Timestamp.h"
-#include "WebServer/base/type.h"
+#include "copyable.h"
+#include "Timestamp.h"
+#include "type.h"
 
 #include <map>
 #include <assert.h>

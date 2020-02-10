@@ -1,10 +1,10 @@
 #ifndef _NET_EVENTLOOPTHREAD_H
 #define _NET_EVENTLOOPTHREAD_H
 
-#include "WebServer/base/nocopyable.h"
-#include "WebServer/base/Thread.h"
-#include "WebServer/base/MutexLock.h"
-#include "WebServer/base/Condition.h"
+#include "nocopyable.h"
+#include "Thread.h"
+#include "MutexLock.h"
+#include "Condition.h"
 
 #include <functional>
 

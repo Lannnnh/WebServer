@@ -1,7 +1,7 @@
 #ifndef _NET_CONNECTOR_H
 #define _NET_CONNECTOR_H
 
-#include "WebServer/base/nocopyable.h"
+#include "nocopyable.h"
 
 #include <functional>
 #include <memory>

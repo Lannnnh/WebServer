@@ -1,7 +1,7 @@
 #ifndef _NET_CALLBACKS_H
 #define _NET_CALLBACKS_H
 
-#include "WebServer/base/Timestamp.h"
+#include "Timestamp.h"
 
 #include <functional>
 #include <memory>

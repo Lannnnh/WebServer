@@ -1,7 +1,7 @@
 #ifndef _NET_HTTP_HTTPCONTEXT_H
 #define _NET_HTTP_HTTPCONTEXT_H
 
-#include "WebServer/base/copyable.h"
+#include "copyable.h"
 #include "HttpRequest.h"
 
 class Buffer;

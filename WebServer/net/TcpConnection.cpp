@@ -6,8 +6,8 @@
 #include "TcpConnection.h"
 #include "Channel.h"
 #include "EventLoop.h"
-#include "WebServer/base/WeakCallback.h"
-#include "WebServer/base/Logging.h"
+#include "WeakCallback.h"
+#include "Logging.h"
 #include "Socket.h"
 
 #include <errno.h>

@@ -1,6 +1,6 @@
 #include "Socket.h"
-#include "WebServer/base/type.h"
-#include "WebServer/base/Logging.h"
+#include "type.h"
+#include "Logging.h"
 
 #include <netinet/in.h>
 #include <stdio.h>

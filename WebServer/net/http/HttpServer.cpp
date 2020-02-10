@@ -1,5 +1,5 @@
 #include "HttpServer.h"
-#include "WebServer/base/Logging.h"
+#include "Logging.h"
 #include "HttpContext.h"
 #include "HttpRequest.h"
 #include "HttpResponse.h"

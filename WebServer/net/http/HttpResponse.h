@@ -1,8 +1,8 @@
 #ifndef _NET_HTTP_HTTPRESPOENSE_H
 #define _NET_HTTP_HTTPRESPOENSE_H
 
-#include "WebServer/base/copyable.h"
-#include "WebServer/base/type.h"
+#include "copyable.h"
+#include "type.h"
 
 #include <map>
 

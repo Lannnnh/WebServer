@@ -1,8 +1,8 @@
 #include "HttpServer.h"
 #include "HttpRequest.h"
 #include "HttpResponse.h"
-#include "WebServer/net/EventLoop.h"
-#include "WebServer/base/Logging.h"
+#include "EventLoop.h"
+#include "Logging.h"
 
 #include <iostream>
 #include <netinet/in.h>

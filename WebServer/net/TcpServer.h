@@ -1,10 +1,10 @@
 #ifndef _NET_TCPSERVER_H
 #define _NET_TCPSERVER_H
 
-#include "WebServer/base/nocopyable.h"
-#include "WebServer/base/type.h"
-#include "WebServer/base/Atomic.h"
-#include "WebServer/net/TcpConnection.h"
+#include "nocopyable.h"
+#include "type.h"
+#include "Atomic.h"
+#include "TcpConnection.h"
 #include "Callbacks.h"
 
 #include <map>

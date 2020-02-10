@@ -3,8 +3,8 @@
 #include "EventLoop.h"
 #include "Timer.h"
 #include "TimerId.h"
-#include "WebServer/base/type.h"
-#include "WebServer/base/Logging.h"
+#include "type.h"
+#include "Logging.h"
 
 #include <sys/timerfd.h>
 #include <assert.h>

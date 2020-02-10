@@ -6,6 +6,8 @@ set(http_SRCS
     HttpContext.cpp
 )
 
+include_directories(${PROJECT_SOURCE_DIR}/WebServer/net)
+
 add_library(http ${http_SRCS})
 target_link_libraries(http net)
 

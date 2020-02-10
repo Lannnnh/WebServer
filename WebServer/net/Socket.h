@@ -1,7 +1,7 @@
 #ifndef _NET_SOCKET_H_
 #define _NET_SOCKET_H_
 
-#include "WebServer/base/nocopyable.h"
+#include "nocopyable.h"
 
 #include <string>
 #include <arpa/inet.h>

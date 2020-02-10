@@ -1,7 +1,7 @@
 #ifndef _NET_HTTP_HTTPSERVER_H
 #define _NET_HTTP_HTTPSERVER_H
 
-#include "WebServer/net/TcpServer.h"
+#include "TcpServer.h"
 
 class HttpRequest;
 class HttpResponse;

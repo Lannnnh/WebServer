@@ -1,8 +1,8 @@
 #ifndef _NET_EVENTLOOPTHREADPOOL_H
 #define _NET_EVENTLOOPTHREADPOOL_H
 
-#include "WebServer/base/nocopyable.h"
-#include "WebServer/base/type.h"
+#include "nocopyable.h"
+#include "type.h"
 
 #include <functional>
 #include <memory>
