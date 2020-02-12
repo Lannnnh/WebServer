@@ -22,7 +22,7 @@ class TimerId : public copyable
         friend class TimerQueue;
         
     private:
-        Timer *timer_;
+        Timer* timer_;
         int64_t sequence_;
 };
 

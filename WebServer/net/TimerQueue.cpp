@@ -86,7 +86,7 @@ TimerQueue::~TimerQueue()
 
 TimerId TimerQueue::addTimer(TimerCallback cb, Timestamp when, double interval)
 {
-    Timer *timer = new Timer(std::move(cb), when, interval);
+    Timer* timer = new Timer(std::move(cb), when, interval);
     loop_->runInLoop(std::bind(&TimerQueue::addTimerInLoop, this, timer));
     return TimerId(timer, timer->sequence());
 }
@@ -102,7 +102,7 @@ void TimerQueue::addTimerInLoop(Timer *timer)
     }
 }
 
-bool TimerQueue::insert(Timer *timer)
+bool TimerQueue::insert(Timer* timer)
 {
     loop_->assertInLoopThread();
     assert(timers_.size() == activeTimers_.size());
