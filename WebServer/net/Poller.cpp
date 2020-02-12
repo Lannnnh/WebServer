@@ -80,7 +80,7 @@ void Poller::updateChannel(Channel *channel)
         assert(channels_[channel->fd()] == channel);
         int idx = channel->index();
         assert(0 <= idx && idx < static_cast<int> (pollfds_.size()));
-        struct pollfd &pfd =  pollfds_[idx];
+        struct pollfd& pfd =  pollfds_[idx];
 
         // 如果某个Channel不关心任何事件，就把pollfd.fd设为 -1 | -channel->fd()-1， 让poll忽略此项。
         assert(pfd.fd == channel->fd() || pfd.fd == -channel->fd()-1);
@@ -135,7 +135,6 @@ void Poller::removeChannel(Channel *channel)
         channels_[channelAtEnd]->set_index(idx);
         pollfds_.pop_back();
     }
-    
 }
 
 bool Poller::hasChannel(Channel *channel)
