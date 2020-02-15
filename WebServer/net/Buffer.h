@@ -151,6 +151,7 @@ class Buffer : public copyable
             std::copy(d, d+len, begin()+readerIndex_);
         }
 
+        // 手动调整Buffer size
         void shrink(size_t reserve)
         {
             Buffer other;
