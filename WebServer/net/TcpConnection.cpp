@@ -138,6 +138,12 @@ void TcpConnection::sendInLoop(const void* message, size_t len)
             if (errno != EWOULDBLOCK)
             {
                 LOG << "TcpConnection::sendInLoop";
+                /*
+                    ECONNRESET产生的条件：
+                    1. 接收端recv或read，对端连接已经关闭，read/recv返回错误
+                    2. 对端重启，还未建立连接
+                    3. 发送端已经断开连接，但是调用send会触发该错误
+                */
                 if (errno == EPIPE || errno == ECONNRESET) // FIXME: any others?
                 {
                     faultError = true;
@@ -294,7 +300,6 @@ void TcpConnection::handleWrite()
         {
             LOG << "TcpConnection::handleWrite";
         }
-        
     }
     else
     {

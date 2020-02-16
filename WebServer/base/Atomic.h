@@ -54,6 +54,7 @@ class AtomicIntegerT : nocopyable
 
         T getAndSet(T newValue)
         {
+            // 将value_设置为newValue，并返回value_之前的值
             return __sync_lock_test_and_set(&value_, newValue);
         }
 
