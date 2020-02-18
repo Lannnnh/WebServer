@@ -102,8 +102,10 @@ void onRequest(const HttpRequest& req, HttpResponse* resp)
         resp->setContentType("text/html");
         resp->addHeader("Server", "Lannnnh");
         std::string now = Timestamp::now().toFormattedString();
-        resp->setBody("<html><head><title>This is title</title></head>"
-                      "<body><h1>Hello</h1>Now is " + now +
+        resp->setBody("<html><head><title>Lannnnh</title></head>"
+                      "<body><h1>Welcome to Lannnnh's WebServer</h1>"
+                      "<p>This is a simple test in WebServer</p>"
+                      "<h2>Time: </h2>"+now+
                       "</body></html>");
     }
     else if (req.path() == "/favicon.ico")
