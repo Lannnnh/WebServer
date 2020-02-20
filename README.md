@@ -6,8 +6,9 @@
 
 ## 开发平台
 
-Linux: 
-Complier: 
+Linux：
+
+Complier：
 
 ## 安装与使用
 

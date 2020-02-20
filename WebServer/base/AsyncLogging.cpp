@@ -58,6 +58,7 @@ void AsyncLogging::threadFunc()
         assert(newBuffer2 && newBuffer2->length() == 0);
         assert(bufferToWrite.empty());
 
+        // 触发条件：1. 超时 2. 前端把某一个Buffer写满了
         {
             MutexLockGuard lock(mutex_);
             if (buffers_.empty())
