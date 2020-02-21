@@ -6,7 +6,7 @@
 
 1.  [日志Log设计与实现](https://github.com/Lannnnh/WebServer/blob/master/日志Log设计与实现.md)
 2.  [TcpServer设计与实现](https://github.com/Lannnnh/WebServer/blob/master/TcpServer设计与实现.md)
-3.  [HttpServer设计与实现](https://github.com/Lannnnh/WebServer/blob/master/HttpServer设计与实现.md)
+3.  [Http Server设计与实现](https://github.com/Lannnnh/WebServer/blob/master/Http%20Server设计与实现.md)
 
 ## 开发平台
 
@@ -26,4 +26,5 @@ Complier： g++ 7.4.0
 ./httpserver_test [-threadNum]
 ```
 
-服务器运行起来之后在浏览器访问服务器http://127.0.0.1:8000之后的显示效果![html](G:\beap\Webserver\photo\html.png)
+服务器运行起来之后在浏览器访问服务器http://127.0.0.1:8000之后的显示效果
+![html](G:\beap\Webserver\photo\html.png)
