@@ -6,9 +6,9 @@
 
 ## 开发平台
 
-Linux：
+Linux： 18.04.2
 
-Complier：
+Complier： g++ 7.4.0
 
 ## 安装与使用
 
