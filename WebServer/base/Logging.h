@@ -39,6 +39,7 @@ class Logger
         static std::string logFileName_;
 };
 
+// 预定宏：__FILE__ 当前程序源文件名，__LINE__当前程序行的行号
 #define LOG Logger(__FILE__, __LINE__).stream()
 
 #endif // end _BASE_LOGGING_H

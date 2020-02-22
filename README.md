@@ -26,5 +26,5 @@ Complier： g++ 7.4.0
 ./httpserver_test [-threadNum]
 ```
 
-服务器运行起来之后在浏览器访问服务器http://127.0.0.1:8000之后的显示效果
+服务器运行起来之后在浏览器访问服务器==http://127.0.0.1:8000==之后的显示效果
 ![html](G:\beap\Webserver\photo\html.png)
