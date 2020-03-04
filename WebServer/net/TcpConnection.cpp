@@ -120,7 +120,7 @@ void TcpConnection::sendInLoop(const void* message, size_t len)
         LOG << "disconnected, give up writing";
         return;
     }
-    // if no thing in output queue, try writing directly
+    // 如果ouput缓冲区里没有东西，那么直接写，否则先把output缓冲区里的东西发送
     if (!channel_->isWriting() && outputBuffer_.readableBytes() == 0)
     {
         nwrote = sockets::write(channel_->fd(), message, len);
